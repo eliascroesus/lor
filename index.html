@@ -109,6 +109,19 @@ html[data-side="right"] .sky .gr { transform: scale(1.18); } html[data-side="rig
 .btn-glass { background: rgba(255,255,255,.04); color: var(--fg); border: 1px solid var(--line-2); backdrop-filter: blur(10px); }
 .btn-glass:hover { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.07); }
 .btn-sm { padding: 10px 18px; font-size: 14px; }
+.cta-block { margin-top: 32px; display: grid; justify-items: start; gap: 12px; }
+.cta-block.c { justify-items: center; margin-top: 4px; }
+.btn-cta {
+  display: inline-flex; align-items: center; gap: 14px; text-decoration: none;
+  font: 700 clamp(17px, 1.5vw, 19px)/1 var(--body); letter-spacing: -.01em; color: #06070d; background: #fff;
+  padding: 21px 30px 21px 34px; border-radius: 999px;
+  box-shadow: -10px 0 40px -12px rgba(58,102,255,.9), 10px 0 40px -12px rgba(255,48,73,.9), inset 0 -3px 0 rgba(6,7,13,.12);
+  transition: transform .2s ease, box-shadow .3s ease;
+}
+.btn-cta svg { width: 22px; height: 22px; padding: 4px; box-sizing: content-box; border-radius: 50%; color: #fff; background: linear-gradient(90deg, var(--blue) 50%, var(--red) 50%); transition: transform .2s ease; }
+.btn-cta:hover { transform: translateY(-2px); box-shadow: -14px 0 50px -10px rgba(58,102,255,1), 14px 0 50px -10px rgba(255,48,73,1), inset 0 -3px 0 rgba(6,7,13,.12); }
+.btn-cta:hover svg { transform: translateX(3px); }
+.cta-note { font-family: var(--mono); font-size: 12.5px; color: var(--fg-3); letter-spacing: .04em; }
 
 /* ---------- nav ---------- */
 .nav {
@@ -126,6 +139,7 @@ html[data-side="right"] .sky .gr { transform: scale(1.18); } html[data-side="rig
   font-family: var(--mono); font-size: 13px; color: var(--fg-2);
 }
 .ca-pill span:first-child { color: var(--fg-3); font-size: 11px; letter-spacing: .12em; }
+.ca-pill { margin-left: auto; }
 .ca-pill [data-ca] { color: var(--fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 22ch; }
 .icon-btn { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: 0; cursor: pointer; background: rgba(255,255,255,.08); color: var(--fg); transition: background .2s; }
 .icon-btn:hover { background: rgba(255,255,255,.16); }
@@ -181,6 +195,11 @@ html[data-side="right"] .hero h1 .tb { opacity: .25; filter: saturate(.3); }
 .coin { width: 100%; height: 100%; cursor: pointer; transition: transform 1.2s cubic-bezier(.2,.8,.2,1); border: 0; padding: 0; background: none; display: block; border-radius: 50%; }
 .coin svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 40px 50px rgba(0,0,0,.6)); }
 .coin.spin { transform: rotateY(720deg); }
+.hero-char { position: absolute; bottom: 0; z-index: 4; width: 30%; height: auto; transform-origin: 50% 100%; animation: sway 5s ease-in-out infinite; filter: drop-shadow(0 16px 24px rgba(0,0,0,.5)); }
+.hero-char.l { left: -3%; }
+.hero-char.r { right: -3%; animation-delay: -2.5s; }
+@keyframes sway { 0%, 100% { rotate: -2deg; } 50% { rotate: 2deg; } }
+.team-char { width: 92px; flex-shrink: 0; }
 .coin-cap { position: absolute; left: 50%; bottom: -7%; transform: translateX(-50%); font-family: var(--mono); font-size: 12.5px; color: var(--fg-3); white-space: nowrap; }
 .coin-cap b { color: var(--fg); font-weight: 600; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -237,12 +256,6 @@ html[data-side="right"] .hero h1 .tb { opacity: .25; filter: saturate(.3); }
 html[data-side="left"] .team.left, html[data-side="right"] .team.right { border-color: color-mix(in srgb, var(--c) 70%, transparent); box-shadow: 0 30px 90px -40px var(--c); }
 .team-top { display: flex; align-items: center; gap: 18px; position: relative; }
 .team.right .team-top { flex-direction: row-reverse; text-align: right; }
-.orb {
-  width: 84px; height: 84px; border-radius: 50%; flex-shrink: 0; display: grid; place-items: center; color: #fff;
-  background: radial-gradient(circle at 35% 28%, var(--hi), var(--c) 55%, var(--deep));
-  box-shadow: 0 16px 40px -10px var(--c), inset 0 2px 0 rgba(255,255,255,.35), inset 0 -6px 14px rgba(0,0,0,.25);
-}
-.orb svg { width: 38px; height: 38px; }
 .team-k { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--hi); }
 .team h3 { font-size: clamp(40px, 4.4vw, 60px); letter-spacing: -.05em; margin-top: 6px; }
 .slogan { font-family: var(--display); font-weight: 700; font-size: clamp(22px, 2.2vw, 28px); letter-spacing: -.03em; line-height: 1.15; position: relative; }
@@ -314,14 +327,9 @@ html[data-side="left"] .team.left, html[data-side="right"] .team.right { border-
 
 /* ---------- faq ---------- */
 .faq { max-width: 860px; margin-inline: auto; display: grid; gap: 10px; }
-.faq details { border-radius: var(--r-md); transition: border-color .25s; }
-.faq details[open] { border-color: var(--line-2); }
-.faq summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 22px 24px; font-weight: 600; font-size: 17.5px; letter-spacing: -.01em; }
-.faq summary::-webkit-details-marker { display: none; }
-.faq summary .pm { width: 30px; height: 30px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.06); transition: transform .3s ease, background .3s; }
-.faq summary .pm svg { width: 15px; height: 15px; }
-.faq details[open] summary .pm { transform: rotate(45deg); background: rgba(255,255,255,.12); }
-.faq .ans { padding: 0 24px 22px; color: var(--fg-2); max-width: 64ch; }
+.qa { padding: 22px 24px; border-radius: var(--r-md); }
+.qa h3 { font-family: var(--body); font-weight: 600; font-size: 17.5px; letter-spacing: -.01em; line-height: 1.35; }
+.qa p { margin-top: 6px; color: var(--fg-2); max-width: 64ch; }
 
 /* ---------- final cta ---------- */
 .final { padding-block: clamp(32px, 5vw, 80px) clamp(64px, 9vw, 120px); }
@@ -370,16 +378,16 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
 .board::before { content: ""; position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(50% 80% at 0% 0%, rgba(58,102,255,.18), transparent 70%), radial-gradient(50% 80% at 100% 0%, rgba(255,48,73,.16), transparent 70%); }
 .board > * { position: relative; }
-.board-top { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: end; gap: 16px; }
+.board-top { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 16px; }
 .tally { display: grid; gap: 4px; min-width: 0; position: relative; }
 .tally.r { text-align: right; justify-items: end; }
 .tally-k { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
 .tally.l .tally-k { color: var(--blue-hi); } .tally.r .tally-k { color: var(--red-hi); }
 .tally-k svg { width: 14px; height: 14px; }
-.tally-n { font-family: var(--display); font-weight: 800; font-size: clamp(48px, 7vw, 96px); letter-spacing: -.05em; line-height: .9; font-variant-numeric: tabular-nums; position: relative; }
+.tally-n { font-family: var(--display); font-weight: 800; font-size: clamp(44px, 6vw, 84px); letter-spacing: -.05em; line-height: .9; font-variant-numeric: tabular-nums; position: relative; }
 .tally-p { font-family: var(--mono); font-size: 14px; color: var(--fg-2); font-variant-numeric: tabular-nums; }
 .live-pill { display: inline-flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(6,7,13,.55);
-  font-family: var(--mono); font-size: 12px; color: var(--fg-2); white-space: nowrap; margin-bottom: 10px; }
+  font-family: var(--mono); font-size: 12px; color: var(--fg-2); white-space: nowrap; }
 .live-pill b { color: var(--fg); font-weight: 600; font-variant-numeric: tabular-nums; }
 
 .tug { position: relative; margin-top: clamp(22px, 3vw, 34px); height: clamp(56px, 6vw, 76px); border-radius: 999px; display: flex;
@@ -406,25 +414,28 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
 .ticks span:last-child { text-align: right; }
 
 .bump { position: absolute; top: -8px; font-family: var(--mono); font-weight: 600; font-size: 15px; pointer-events: none; animation: bump 1.4s ease-out forwards; }
-.tally.l .bump { left: 150px; color: var(--blue-hi); } .tally.r .bump { right: 150px; color: var(--red-hi); }
+.tally.l .bump { left: 100%; top: 30%; margin-left: 6px; color: var(--blue-hi); } .tally.r .bump { right: 100%; top: 30%; margin-right: 6px; color: var(--red-hi); }
 @keyframes bump { from { opacity: 1; transform: translateY(10px); } to { opacity: 0; transform: translateY(-28px); } }
 
-.board-actions { margin-top: clamp(26px, 3.4vw, 40px); display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 16px; }
-.board-actions .vote:first-child { justify-self: start; } .board-actions .vote:last-child { justify-self: end; }
-.vote {
+.side {
   --c: var(--blue); --hi: var(--blue-hi);
-  display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
-  font: 600 16px/1 var(--body); padding: 17px 26px; border-radius: 999px; min-width: min(220px, 100%);
-  color: var(--fg); background: color-mix(in srgb, var(--c) 12%, transparent); border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
-  transition: transform .18s ease, background .3s, box-shadow .3s, color .3s;
+  display: flex; align-items: flex-end; gap: clamp(10px, 1.6vw, 18px); min-width: 0; cursor: pointer; text-align: left;
+  font: inherit; color: inherit; padding: 14px clamp(12px, 1.6vw, 20px) 16px; border-radius: 24px;
+  background: color-mix(in srgb, var(--c) 7%, transparent); border: 1px solid color-mix(in srgb, var(--c) 22%, transparent);
+  transition: transform .2s ease, background .3s, border-color .3s, box-shadow .3s;
 }
-.vote.r { --c: var(--red); --hi: var(--red-hi); }
-.vote svg { width: 18px; height: 18px; }
-.vote:hover { transform: translateY(-1px); background: color-mix(in srgb, var(--c) 22%, transparent); }
-.vote[aria-pressed="true"] { background: var(--c); color: #fff; border-color: transparent; box-shadow: 0 14px 40px -12px var(--c), inset 0 1px 0 rgba(255,255,255,.3); }
-.your-vote { text-align: center; font-family: var(--mono); font-size: 12.5px; color: var(--fg-3); line-height: 1.5; }
-.your-vote b { color: var(--fg); font-weight: 600; }
-.your-vote button { font: inherit; color: var(--fg-2); background: none; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.side.r { --c: var(--red); --hi: var(--red-hi); flex-direction: row-reverse; text-align: right; }
+.side:hover { transform: translateY(-3px); background: color-mix(in srgb, var(--c) 14%, transparent); border-color: color-mix(in srgb, var(--c) 50%, transparent); }
+.side[aria-pressed="true"] { background: color-mix(in srgb, var(--c) 18%, transparent); border-color: var(--c); box-shadow: 0 20px 60px -24px var(--c), inset 0 1px 0 rgba(255,255,255,.08); }
+.side-char { width: clamp(84px, 9vw, 120px); flex-shrink: 0; display: block; transform-origin: 50% 100%; transition: transform .3s ease; }
+.side:hover .side-char { transform: rotate(-3deg) scale(1.04); }
+.side.r:hover .side-char { transform: rotate(3deg) scale(1.04); }
+.side-cta { margin-top: 8px; justify-self: start; display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: .06em;
+  padding: 7px 12px; border-radius: 999px; color: var(--hi); background: color-mix(in srgb, var(--c) 14%, transparent); }
+.tally.r .side-cta { justify-self: end; }
+.side[aria-pressed="true"] .side-cta { background: var(--c); color: #fff; }
+.hop { animation: hop .6s cubic-bezier(.3,1.6,.5,1); }
+@keyframes hop { 0% { transform: translateY(0); } 40% { transform: translateY(-16px) scale(1.04, .97); } 100% { transform: translateY(0); } }
 .board-foot { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
   font-family: var(--mono); font-size: 12.5px; color: var(--fg-3); }
 .board-foot b { color: var(--fg); font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -445,9 +456,13 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
 @media (max-width: 680px) {
   .board-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .board-top .live-pill { grid-column: 1 / -1; grid-row: 1; justify-self: center; margin-bottom: 4px; }
-  .board-actions { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .board-actions .your-vote { grid-column: 1 / -1; grid-row: 2; }
-  .vote { min-width: 0; width: 100%; padding: 15px 14px; font-size: 15px; }
+  .side, .side.r { flex-direction: column; align-items: center; text-align: center; padding: 14px 10px 16px; }
+  .tally.l, .tally.r { justify-items: center; text-align: center; }
+  .tally.l .side-cta, .tally.r .side-cta { justify-self: center; }
+  .side-char { width: 88px; }
+  .tally-p { font-size: 12.5px; }
+  .otv { display: none; }
+  .side-cta { font-size: 11px; padding: 7px 10px; white-space: nowrap; }
   .ticks span:nth-child(2) { display: none; }
   .ticks { grid-template-columns: 1fr 1fr; }
 }
@@ -457,13 +472,15 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
   .checks { grid-template-columns: minmax(0, 1fr); }
   .steps, .road { grid-template-columns: minmax(0, 1fr); }
   .team.right .team-top { flex-direction: row; text-align: left; }
-  .orb { width: 68px; height: 68px; }
+  .team-char { width: 76px; }
+  .ca-pill [data-ca] { max-width: 12ch; }
+  .btn-cta { padding: 19px 22px 19px 26px; }
   .tk { padding: 15px 22px; font-size: 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .halo, .orbit, .sat > span, .coin-wrap, .sparkle, .track, .tug-l::after, .tug-r::after, .dot-live::before { animation: none !important; }
+  .halo, .orbit, .sat > span, .coin-wrap, .sparkle, .track, .hero-char, .hop, .tug-l::after, .tug-r::after, .dot-live::before { animation: none !important; }
   .tug-l, .knob, .mini-bar i { transition: none; }
   .ticker { overflow-x: auto; }
   .coin { transition: none; }
@@ -505,6 +522,53 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
     <symbol id="i-chart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M7 15l4-4 3 3 6-7"/></symbol>
     <symbol id="i-scale" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v17M7 21h10M4 7h16M6 7l-3 7a3.2 3.2 0 0 0 6 0zM18 7l-3 7a3.2 3.2 0 0 0 6 0z"/></g></symbol>
 
+    <!-- Lenny: Team Left. Flat cutout style, looks toward the center. -->
+    <symbol id="char-l" viewBox="0 0 200 250">
+      <ellipse cx="100" cy="241" rx="64" ry="7" fill="#000" opacity=".35"/>
+      <ellipse cx="72" cy="231" rx="25" ry="9" fill="#14161f"/>
+      <ellipse cx="128" cy="231" rx="25" ry="9" fill="#14161f"/>
+      <path d="M60 196 h80 v32 h-80z" fill="#262b40"/>
+      <path d="M100 204 v24" stroke="#14161f" stroke-width="2.5"/>
+      <path d="M44 214 C42 174 60 148 100 148 C140 148 158 174 156 214 Z" fill="#3a66ff" stroke="#14161f" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M100 152 V213" stroke="#1d3bc0" stroke-width="3"/>
+      <path d="M72 153 Q100 174 128 153" fill="none" stroke="#1d3bc0" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="124" cy="184" r="9.5" fill="#fff" stroke="#14161f" stroke-width="2"/>
+      <text x="124" y="188.5" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="12" font-weight="900" fill="#3a66ff">L</text>
+      <circle cx="45" cy="203" r="13" fill="#1d3bc0" stroke="#14161f" stroke-width="3"/>
+      <circle cx="155" cy="203" r="13" fill="#1d3bc0" stroke="#14161f" stroke-width="3"/>
+      <ellipse cx="100" cy="92" rx="75" ry="66" fill="#f6d2b0" stroke="#14161f" stroke-width="3"/>
+      <path d="M26 88 C22 40 58 21 100 21 C142 21 179 40 174 88 C170 72 162 64 152 60 L148 71 L138 58 L130 69 L120 56 L110 67 L100 54 L90 67 L80 56 L71 69 L62 60 C46 64 32 74 26 88 Z" fill="#17181f" stroke="#14161f" stroke-width="3" stroke-linejoin="round"/>
+      <ellipse cx="84" cy="97" rx="17" ry="20" fill="#fff" stroke="#14161f" stroke-width="3"/>
+      <ellipse cx="116" cy="97" rx="17" ry="20" fill="#fff" stroke="#14161f" stroke-width="3"/>
+      <circle cx="90" cy="99" r="4.2" fill="#14161f"/><circle cx="122" cy="99" r="4.2" fill="#14161f"/>
+      <path d="M84 132 Q102 143 121 127" fill="none" stroke="#14161f" stroke-width="3.5" stroke-linecap="round"/>
+    </symbol>
+    <!-- Riley: Team Right. Short blonde bob. -->
+    <symbol id="char-r" viewBox="0 0 200 250">
+      <ellipse cx="100" cy="241" rx="64" ry="7" fill="#000" opacity=".35"/>
+      <ellipse cx="72" cy="231" rx="24" ry="9" fill="#14161f"/>
+      <ellipse cx="128" cy="231" rx="24" ry="9" fill="#14161f"/>
+      <path d="M62 196 h76 v32 h-76z" fill="#262b40"/>
+      <path d="M100 204 v24" stroke="#14161f" stroke-width="2.5"/>
+      <path d="M44 214 C42 174 60 148 100 148 C140 148 158 174 156 214 Z" fill="#ff3049" stroke="#14161f" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M100 152 V213" stroke="#b8142a" stroke-width="3"/>
+      <path d="M72 153 Q100 174 128 153" fill="none" stroke="#b8142a" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="76" cy="184" r="9.5" fill="#fff" stroke="#14161f" stroke-width="2"/>
+      <text x="76" y="188.5" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="12" font-weight="900" fill="#ff3049">R</text>
+      <circle cx="45" cy="203" r="13" fill="#b8142a" stroke="#14161f" stroke-width="3"/>
+      <circle cx="155" cy="203" r="13" fill="#b8142a" stroke="#14161f" stroke-width="3"/>
+      <path d="M14 140 C4 64 40 16 100 16 C160 16 196 64 186 140 C182 152 164 154 156 144 L44 144 C36 154 18 152 14 140 Z" fill="#f7cf4a" stroke="#14161f" stroke-width="3" stroke-linejoin="round"/>
+      <ellipse cx="100" cy="92" rx="73" ry="66" fill="#f6d2b0" stroke="#14161f" stroke-width="3"/>
+      <path d="M27 92 C24 42 60 22 100 22 C140 22 176 42 173 92 C166 76 154 66 140 64 C130 72 116 72 108 62 C98 72 82 72 72 62 C56 62 36 74 27 92 Z" fill="#f7cf4a" stroke="#14161f" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M100 24 C96 40 92 52 88 64 M130 30 C130 44 128 54 124 66" fill="none" stroke="#d9a520" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="140" y="50" width="20" height="8" rx="4" fill="#ff3049" stroke="#14161f" stroke-width="2" transform="rotate(-24 150 54)"/>
+      <ellipse cx="84" cy="98" rx="17" ry="20" fill="#fff" stroke="#14161f" stroke-width="3"/>
+      <ellipse cx="116" cy="98" rx="17" ry="20" fill="#fff" stroke="#14161f" stroke-width="3"/>
+      <circle cx="78" cy="100" r="4.2" fill="#14161f"/><circle cx="110" cy="100" r="4.2" fill="#14161f"/>
+      <path d="M68 84 l-8 -5 M71 79 l-6 -7 M132 84 l8 -5 M129 79 l6 -7" stroke="#14161f" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="62" cy="122" r="7" fill="#ff8a98" opacity=".55"/><circle cx="138" cy="122" r="7" fill="#ff8a98" opacity=".55"/>
+      <path d="M86 128 Q100 142 114 128 Q100 134 86 128 Z" fill="#7a1020" stroke="#14161f" stroke-width="3" stroke-linejoin="round"/>
+    </symbol>
     <symbol id="coin" viewBox="0 0 400 412">
       <circle cx="200" cy="211" r="198" fill="url(#platEdge)"/>
       <circle cx="200" cy="200" r="198" fill="url(#plat)"/>
@@ -545,7 +609,10 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="$LOR home"><svg viewBox="0 0 400 412" aria-hidden="true"><use href="#coin"/></svg><b>$LOR</b></a>
-    <a class="btn btn-primary btn-sm" data-link="buy" href="#buy" target="_blank" rel="noopener">Buy $LOR <svg><use href="#i-ext"/></svg></a>
+    <div class="ca-pill" role="group" aria-label="Contract address">
+      <span>CA</span><span data-ca>Coming soon</span>
+      <button class="icon-btn" type="button" data-copy aria-label="Copy contract address"><svg><use href="#i-copy"/></svg></button>
+    </div>
   </div>
 </header>
 
@@ -561,12 +628,9 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
         <p class="lede"><b>$LOR</b> is the meme coin for both sides of the aisle. Every buy is a vote. Pick your side, hold the line, and let the chart settle the debate.</p>
 
 
-        <div class="ctas">
-          <a class="btn btn-primary" data-link="buy" href="#buy" target="_blank" rel="noopener">Buy $LOR <svg><use href="#i-right"/></svg></a>
-          <div class="ca-pill" role="group" aria-label="Contract address">
-            <span>CA</span><span data-ca>Coming soon</span>
-            <button class="icon-btn" type="button" data-copy aria-label="Copy contract address"><svg><use href="#i-copy"/></svg></button>
-          </div>
+        <div class="cta-block">
+          <a class="btn-cta" data-link="buy" href="#buy" target="_blank" rel="noopener">Buy $LOR on pump.fun <svg><use href="#i-right"/></svg></a>
+          <span class="cta-note">Fair launch · 0% tax · LP burned</span>
         </div>
 
         <a class="mini" href="#count" data-live="wait" aria-label="Live vote count. Jump to the vote">
@@ -582,8 +646,6 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
           <span class="sat w" style="--a:-95deg; --s:46px"><span><svg><use href="#i-star"/></svg></span></span>
           <span class="sat r" style="--a:-35deg"><span><svg><use href="#i-right"/></svg></span></span>
           <span class="sat w" style="--a:20deg; --s:40px"><span><svg><use href="#i-check"/></svg></span></span>
-          <span class="sat d" style="--a:62deg; --s:48px"><span><svg><use href="#i-vote"/></svg></span></span>
-          <span class="sat b" style="--a:135deg; --s:44px"><span><svg><use href="#i-mega"/></svg></span></span>
           <span class="sat r" style="--a:174deg; --s:40px"><span><svg><use href="#i-star"/></svg></span></span>
         </div>
         <div class="orbit o2" aria-hidden="true">
@@ -599,7 +661,8 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
           </button>
           <svg class="sparkle" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 0c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12C6.4 11.4 11.4 6.4 12 0z"/></svg>
         </div>
-        <p class="coin-cap"><b>13</b> stars · <b>2</b> sides · <b>1</b> coin</p>
+        <svg class="hero-char l" viewBox="0 0 200 250" role="img" aria-label="Lenny, Team Left"><use href="#char-l"/></svg>
+        <svg class="hero-char r" viewBox="0 0 200 250" role="img" aria-label="Riley, Team Right"><use href="#char-r"/></svg>
       </div>
     </div>
   </section>
@@ -614,22 +677,30 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
       <div class="head c">
         <span class="eyebrow"><span class="dots"><i></i><i></i></span>Live count</span>
         <h2 id="countTitle">Who's winning?</h2>
-        <p>Every pick is a vote. One vote per voter. Switch sides whenever you want, but we count the flip-flops.</p>
+        <p>Tap Lenny or Riley to cast your vote. One vote each. You can switch, but we count the flip-flops.</p>
       </div>
 
       <div class="board glass" data-live="wait">
         <div class="board-top">
-          <div class="tally l">
-            <span class="tally-k"><svg><use href="#i-left"/></svg>Team Left</span>
-            <span class="tally-n" data-count="left">–</span>
-            <span class="tally-p"><span data-pct="left">–</span> of the vote</span>
-          </div>
+          <button class="side l" type="button" data-pick="left" aria-pressed="false">
+            <svg class="side-char" viewBox="0 0 200 250" aria-hidden="true"><use href="#char-l"/></svg>
+            <span class="tally l">
+              <span class="tally-k">Team Left</span>
+              <span class="tally-n" data-count="left">–</span>
+              <span class="tally-p"><span data-pct="left">–</span><span class="otv"> of the vote</span></span>
+              <span class="side-cta" data-cta="left">Tap to vote Left</span>
+            </span>
+          </button>
           <span class="live-pill"><span class="dot-live">LIVE</span><span><b data-count="total">–</b> votes</span></span>
-          <div class="tally r">
-            <span class="tally-k">Team Right<svg><use href="#i-right"/></svg></span>
-            <span class="tally-n" data-count="right">–</span>
-            <span class="tally-p"><span data-pct="right">–</span> of the vote</span>
-          </div>
+          <button class="side r" type="button" data-pick="right" aria-pressed="false">
+            <svg class="side-char" viewBox="0 0 200 250" aria-hidden="true"><use href="#char-r"/></svg>
+            <span class="tally r">
+              <span class="tally-k">Team Right</span>
+              <span class="tally-n" data-count="right">–</span>
+              <span class="tally-p"><span data-pct="right">–</span><span class="otv"> of the vote</span></span>
+              <span class="side-cta" data-cta="right">Tap to vote Right</span>
+            </span>
+          </button>
         </div>
 
         <div class="tug" id="tug" role="img" aria-label="Live vote split between Left and Right">
@@ -639,12 +710,6 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
           <span class="knob" aria-hidden="true"><svg viewBox="0 0 400 412"><use href="#coin"/></svg></span>
         </div>
         <div class="ticks" aria-hidden="true"><span>← Left takes it</span><span>The aisle</span><span>Right takes it →</span></div>
-
-        <div class="board-actions">
-          <button class="vote l" type="button" data-pick="left" aria-pressed="false"><svg><use href="#i-left"/></svg>Vote Left</button>
-          <p class="your-vote" id="yourVote" aria-live="polite">You haven't voted yet.</p>
-          <button class="vote r" type="button" data-pick="right" aria-pressed="false">Vote Right<svg><use href="#i-right"/></svg></button>
-        </div>
 
         <div class="board-foot">
           <span><b data-count="flips">–</b> flip-flops so far</span>
@@ -666,9 +731,9 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
       <div class="teams">
         <article class="team left">
           <div class="team-top">
-            <div class="orb"><svg><use href="#i-left"/></svg></div>
+            <svg class="team-char" viewBox="0 0 200 250" aria-hidden="true"><use href="#char-l"/></svg>
             <div>
-              <div class="team-k">Left side of the chart</div>
+              <div class="team-k">Lenny · left side of the chart</div>
               <h3>Team Left</h3>
             </div>
           </div>
@@ -684,9 +749,9 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
 
         <article class="team right">
           <div class="team-top">
-            <div class="orb"><svg><use href="#i-right"/></svg></div>
+            <svg class="team-char" viewBox="0 0 200 250" aria-hidden="true"><use href="#char-r"/></svg>
             <div>
-              <div class="team-k">Right side of the chart</div>
+              <div class="team-k">Riley · right side of the chart</div>
               <h3>Team Right</h3>
             </div>
           </div>
@@ -820,9 +885,9 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
         <p>We'll take a few questions.</p>
       </div>
       <div class="faq">
-        <details class="glass" open><summary>So is $LOR left or right?<span class="pm"><svg><use href="#i-plus"/></svg></span></summary><p class="ans">Yes. Every wallet picks a side, and the coin belongs to whoever holds it.</p></details>
-        <details class="glass"><summary>Is this backed by a real politician or party?<span class="pm"><svg><use href="#i-plus"/></svg></span></summary><p class="ans">No. $LOR is satire and has no affiliation with any politician, party, campaign or government.</p></details>
-        <details class="glass"><summary>Is this financial advice?<span class="pm"><svg><use href="#i-plus"/></svg></span></summary><p class="ans">No comment. Also, no. $LOR is a meme coin. Only spend what you're fine losing.</p></details>
+        <div class="qa glass"><h3>So is $LOR left or right?</h3><p>Yes. Every wallet picks a side, and the coin belongs to whoever holds it.</p></div>
+        <div class="qa glass"><h3>Is this backed by a real politician or party?</h3><p>No. $LOR is satire and has no affiliation with any politician, party, campaign or government.</p></div>
+        <div class="qa glass"><h3>Is this financial advice?</h3><p>No comment. Also, no. $LOR is a meme coin. Only spend what you're fine losing.</p></div>
       </div>
     </div>
   </section>
@@ -833,8 +898,9 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
         <svg class="final-coin" viewBox="0 0 400 412" aria-hidden="true"><use href="#coin"/></svg>
         <h2><span class="tb">Pick</span> a <span class="tr">side.</span><br>Any side.</h2>
         <p>Left or right, it's the same coin. Get in before the recount.</p>
-        <div class="ctas" style="justify-content:center;margin-top:4px">
-          <a class="btn btn-primary" data-link="buy" href="#buy" target="_blank" rel="noopener">Buy $LOR <svg><use href="#i-right"/></svg></a>
+        <div class="cta-block c">
+          <a class="btn-cta" data-link="buy" href="#buy" target="_blank" rel="noopener">Buy $LOR on pump.fun <svg><use href="#i-right"/></svg></a>
+          <span class="cta-note">Fair launch · 0% tax · LP burned</span>
         </div>
       </div>
     </div>
@@ -898,9 +964,18 @@ const CONFIG = {
   function setSide(side, opts) {
     root.dataset.side = side;
     document.querySelectorAll("[data-pick]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.pick === side)));
-    if (opts && opts.vote) queueVote(side);
+    if (opts && opts.vote) { queueVote(side); hop(side); }
   }
   document.querySelectorAll("[data-pick]").forEach(b => b.addEventListener("click", () => setSide(b.dataset.pick, { vote: true })));
+
+  function hop(side) {
+    if (side !== "left" && side !== "right") return;
+    document.querySelectorAll(side === "left" ? ".side.l .side-char, .hero-char.l" : ".side.r .side-char, .hero-char.r").forEach(el => {
+      const host = el.classList.contains("hero-char") ? el : el;
+      host.classList.remove("hop"); void host.getBoundingClientRect(); host.classList.add("hop");
+      setTimeout(() => host.classList.remove("hop"), 700);
+    });
+  }
 
   // ---------- live count ----------
   // Two backends: the claude.ai preview keeps votes in the artifact's shared db;
@@ -913,7 +988,6 @@ const CONFIG = {
   const fmt = n => Number(n).toLocaleString("en-US");
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const syncNote = document.getElementById("syncNote");
-  const yourVote = document.getElementById("yourVote");
   const countTitle = document.getElementById("countTitle");
   const tug = document.getElementById("tug");
 
@@ -975,9 +1049,10 @@ const CONFIG = {
     countTitle.innerHTML = title;
 
     const c = live.committed;
-    yourVote.innerHTML = c
-      ? `Your vote: <b>${c === "left" ? "LEFT" : "RIGHT"}</b><br>Tap the other side to switch.`
-      : live.mode ? "You haven't voted yet.<br>Pick a side to count." : "Pick a side to count.";
+    document.querySelectorAll("[data-cta]").forEach(el => {
+      const side = el.dataset.cta;
+      el.textContent = c === side ? "✓ Your vote" : `Tap to vote ${side === "left" ? "Left" : "Right"}`;
+    });
     renderSync();
   }
   function renderSync() {
