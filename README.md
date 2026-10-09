@@ -2,7 +2,7 @@
 
 Landing page for the $LOR meme coin: `index.html` plus three scripts in `js/`.
 
-- `js/rig.js` and `js/idle.js` are the character rig and idle loop copied from [eliascroesus/leftright](https://github.com/eliascroesus/leftright), with one change: here Lenny (blue, the guy) is Team Left and Riley (red, the gal) is Team Right.
+- `js/rig.js`, `js/idle.js` and `js/fx.js` (the hand-cut red/blue split) are copied from [eliascroesus/leftright](https://github.com/eliascroesus/leftright), with one change: here Lenny (blue, the guy) is Team Left and Riley (red, the gal) is Team Right.
 - `js/vendor/gsap.min.js` is GSAP 3.13, which drives the idle loop (yelling, blinking, speech bubbles).
 
 ## Before launch
@@ -36,7 +36,7 @@ It's a static site. Drag the folder (with `js/`) into Netlify or Vercel, or turn
 
 ## What's on the page
 
-- Hero with a 3D coin you can toss (LEFT or RIGHT) and parody campaign pins
+- Above the fold: Lenny and Riley yelling at each other on a red/blue split, tap a side to vote, one Buy CTA
 - "Breaking" satire ticker
 - Candidates: Lefty vs Righty, with buttons that open a prefilled "I'm voting LEFT/RIGHT" post on X
 - Tokenomics as a balanced budget and an official ballot

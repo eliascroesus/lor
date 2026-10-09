@@ -15,7 +15,7 @@
 </head>
 <body>
 <style>
-/* Layout: a dark stage split by the aisle. Blue light from the left, red light from the right, one glossy coin in the middle. */
+/* Layout: a cartoon fight on a red/blue split up top, then a dark page split by the aisle: blue light from the left, red from the right. */
 :root {
   --bg: #06070d;
   --bg-2: #0b0d17;
@@ -79,6 +79,7 @@ html[data-side="right"] .sky .gr { transform: scale(1.18); } html[data-side="rig
 }
 
 /* ---------- shared bits ---------- */
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .glass {
   background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.015));
   border: 1px solid var(--line);
@@ -146,84 +147,86 @@ html[data-side="right"] .sky .gr { transform: scale(1.18); } html[data-side="rig
 .icon-btn svg { width: 15px; height: 15px; }
 .nav .btn { margin-left: auto; }
 
-/* ---------- hero ---------- */
-.hero { padding-block: clamp(48px, 8vw, 104px) clamp(56px, 7vw, 96px); overflow-x: clip; }
-.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(32px, 4vw, 64px); align-items: center; }
-.hero-copy { min-width: 0; }
-.hero h1 { font-size: clamp(58px, 8.4vw, 124px); margin-top: 22px; letter-spacing: -.05em; line-height: .9; }
-.hero h1 .row { display: block; }
-.hero h1 .or { color: var(--fg-3); font-weight: 600; font-style: italic; letter-spacing: -.03em; }
-.hero h1 .same { color: var(--fg); }
-.hero h1 .word { transition: opacity .6s ease, filter .6s ease; padding-right: .02em; }
-html[data-side="left"]  .hero h1 .tr { opacity: .25; filter: saturate(.3); }
-html[data-side="right"] .hero h1 .tb { opacity: .25; filter: saturate(.3); }
-.lede { margin-top: 26px; font-size: clamp(17px, 1.45vw, 19.5px); color: var(--fg-2); max-width: 33em; line-height: 1.6; }
-.lede b { color: var(--fg); font-weight: 600; }
-
-.ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 30px; }
-
-
-/* ---------- coin + orbit ---------- */
-.stage { position: relative; width: 100%; max-width: 580px; aspect-ratio: 1; justify-self: center; display: grid; place-items: center; container-type: inline-size; }
-.halo { position: absolute; inset: 16%; border-radius: 50%;
-  background: conic-gradient(from 180deg, rgba(58,102,255,.6), rgba(58,102,255,.1) 25%, rgba(255,48,73,.1) 50%, rgba(255,48,73,.6) 75%, rgba(58,102,255,.6));
-  filter: blur(60px); opacity: .6; animation: spin 24s linear infinite; }
-.orbit { position: absolute; border-radius: 50%; border: 1px dashed rgba(255,255,255,.1); animation: spin var(--t) linear infinite; }
-.orbit.o1 { inset: 3%; --t: 90s; }
-.orbit.o2 { inset: 17%; --t: 70s; animation-direction: reverse; border-style: solid; border-color: rgba(255,255,255,.06); }
-.sat {
-  position: absolute; left: 50%; top: 50%; width: var(--s, 54px); height: var(--s, 54px); margin: calc(var(--s, 54px) / -2);
-  transform: rotate(var(--a)) translateX(var(--d)) rotate(calc(-1 * var(--a)));
+/* ---------- fight (above the fold) ----------
+   Built like github.com/eliascroesus/leftright: the section paints blue, js/fx.js
+   (split) lays the red half and the hand-cut seam on top (its fill class is
+   still called split-art__blue), paper grain over both, LEFT and RIGHT poster
+   type behind the two of them. */
+.fight { --ink: #1b1412; --paper: #fef5e3; --blue-bg: #1d52bb; --blue-bg-2: #13419b; --red-bg: #a71a1b; --red-bg-2: #8a0f12;
+  position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column;
+  height: calc(100svh - 68px - env(safe-area-inset-top, 0px)); min-height: 560px; max-height: 1000px; color: var(--paper); }
+.fight__bg { position: absolute; inset: -40px; z-index: -1; background: var(--blue-bg); }
+.fight__bg::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .26; background-size: 240px 240px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='d' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .1  0 0 0 0 .08  0 0 0 0 .07  -2.4 0 0 0 1.12'/%3E%3C/filter%3E%3Cfilter id='l' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 .97  0 0 0 0 .9  2.4 0 0 0 -1.32'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23d)'/%3E%3Crect width='100%25' height='100%25' filter='url(%23l)'/%3E%3C/svg%3E"); }
+.split-art { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.split-art__blue { fill: var(--red-bg); }
+.split-art__seam { fill: none; stroke: var(--ink); stroke-width: 6px; stroke-linecap: round; stroke-linejoin: round; }
+.arena { position: relative; flex: 1 1 auto; min-height: 220px; container: arena / size; --fw: min(31cqw, 74cqh); user-select: none; -webkit-user-select: none; }
+.poster { position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: space-between; padding: 3cqh 2cqw; pointer-events: none;
+  font-family: "Bowlby One", "Arial Black", Impact, sans-serif; font-size: min(13cqw, 44cqh); line-height: .8; text-transform: uppercase; }
+.poster__word { display: block; text-shadow: .05em .06em 0 rgba(0,0,0,.16); }
+.poster__word--left { color: var(--blue-bg-2); }
+.poster__word--right { color: var(--red-bg-2); }
+.half { position: absolute; top: 0; bottom: 0; width: 50%; z-index: 1; border: 0; padding: 0; margin: 0; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.half--left { left: 0; } .half--right { right: 0; }
+.half:focus-visible { outline: 4px solid var(--paper); outline-offset: -10px; border-radius: 24px; }
+.fighter { position: absolute; bottom: 1.5%; z-index: 2; width: var(--fw); aspect-ratio: 400 / 460; pointer-events: none; }
+.fighter--left { left: calc(50% - var(--fw)); }
+.fighter--right { left: 50%; }
+.fighter .bubble {
+  --line: 3px; --tail-x: calc(80% - 30px); --tail-tip: 92%;
+  position: absolute; bottom: 95%; right: 26%; z-index: 3; display: inline-block; opacity: 0; pointer-events: none; transform-origin: 84% 120%;
+  padding: .55em .85em .5em; border: var(--line) solid var(--ink); border-radius: 26px 20px 28px 18px / 20px 28px 18px 26px;
+  background: var(--paper); color: var(--ink); box-shadow: 0 5px 0 var(--ink);
+  font-family: "Bowlby One", "Arial Black", Impact, sans-serif; font-size: clamp(.85rem, 1.9cqw + .2rem, 1.5rem); line-height: 1; text-transform: uppercase; white-space: nowrap;
 }
-.o1 .sat { --d: 47cqi; }
-.o2 .sat { --d: 33cqi; }
-.sat > span {
-  display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%;
-  animation: spin var(--t) linear infinite reverse;
-  border: 1px solid rgba(255,255,255,.16);
-  box-shadow: 0 10px 30px -8px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.28);
-  color: #fff; font-family: var(--mono); font-size: 12px; font-weight: 600;
+.fighter--right .bubble { right: auto; left: 26%; --tail-x: 20%; --tail-tip: 8%; transform-origin: 16% 120%; }
+.fighter .bubble::before, .fighter .bubble::after { content: ""; position: absolute; top: 100%; clip-path: polygon(0 0, 100% 0, var(--tail-tip) 100%); }
+.fighter .bubble::before { left: var(--tail-x); width: 30px; height: 26px; margin-top: calc(var(--line) * -1); background: var(--ink); }
+.fighter .bubble::after { left: calc(var(--tail-x) + var(--line) * 1.75); width: calc(30px - var(--line) * 3.5); height: calc(26px - var(--line) * 2.6); margin-top: calc(var(--line) * -1.25); background: var(--paper); }
+.hint { position: absolute; left: 50%; bottom: 3%; z-index: 4; translate: -50% 0; margin: 0; pointer-events: none;
+  padding: .5em .9em .45em; border: 3px solid var(--ink); border-radius: 14px 10px 16px 9px / 10px 16px 9px 14px; background: var(--paper); color: var(--ink); box-shadow: 0 4px 0 var(--ink);
+  font-family: "Bowlby One", "Arial Black", Impact, sans-serif; font-size: clamp(.7rem, 1.5cqw, .95rem); text-transform: uppercase; white-space: nowrap; }
+@container arena (aspect-ratio < 8 / 5) {
+  .fighter { --fw: min(47cqw, 50cqh); bottom: auto; }
+  .fighter--left { left: 3%; top: 3%; }
+  .fighter--right { left: auto; right: 3%; top: auto; bottom: 2%; }
+  .poster { flex-direction: column; justify-content: space-between; padding: 2cqh 3cqw; font-size: min(24cqw, 23cqh); }
+  .poster__word--left { align-self: flex-end; }
+  .poster__word--right { align-self: flex-start; }
+  .half { width: 100%; }
+  .half--left { clip-path: polygon(0 0, 100% 0, 0 100%); }
+  .half--right { clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+  .fighter .bubble { bottom: auto; top: 10%; right: auto; left: 86%; --tail-x: 16%; --tail-tip: 6%; transform-origin: 14% 120%; font-size: clamp(.8rem, 3.6cqw, 1.2rem); }
+  .fighter--right .bubble { top: auto; bottom: 58%; left: auto; right: 86%; --tail-x: calc(84% - 30px); --tail-tip: 94%; transform-origin: 86% 120%; }
+  .hint { bottom: auto; top: 50%; translate: -50% -50%; rotate: -4deg; }
 }
-.orbit.o2 .sat > span { animation-direction: normal; }
-.sat svg { width: 46%; height: 46%; }
-.sat.b > span { background: radial-gradient(circle at 35% 30%, #86a2ff, var(--blue) 55%, var(--blue-deep)); }
-.sat.r > span { background: radial-gradient(circle at 35% 30%, #ff8c97, var(--red) 55%, var(--red-deep)); }
-.sat.w > span { background: radial-gradient(circle at 35% 30%, #ffffff, #dfe4f2 55%, #9aa3bd); color: var(--bg); }
-.sat.d > span { background: radial-gradient(circle at 35% 30%, #2b3048, #121522 70%); color: var(--fg-2); }
+.fight__panel { position: relative; z-index: 3; display: grid; justify-items: center; gap: 14px; padding: 6px 16px calc(22px + env(safe-area-inset-bottom, 0px)); text-align: center; }
+.fight__title { font-family: "Bowlby One", "Arial Black", Impact, sans-serif; font-weight: 400; letter-spacing: 0; font-size: clamp(26px, 3.6vw, 48px); line-height: 1; text-transform: uppercase; color: var(--paper);
+  text-shadow: 0 3px 0 var(--ink), 3px 0 0 var(--ink), 0 -3px 0 var(--ink), -3px 0 0 var(--ink), 3px 3px 0 var(--ink), -3px 3px 0 var(--ink), 3px -3px 0 var(--ink), -3px -3px 0 var(--ink), 0 7px 0 var(--ink); }
+.btn-toon { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; cursor: pointer;
+  font-family: "Bowlby One", "Arial Black", Impact, sans-serif; font-size: clamp(18px, 1.9vw, 26px); line-height: 1; text-transform: uppercase; color: var(--ink);
+  background: #ffd337; padding: .7em 1.2em .62em; border: 4px solid var(--ink); border-radius: 22px 16px 24px 14px / 16px 24px 14px 22px; box-shadow: 0 7px 0 var(--ink);
+  transition: transform .12s ease, box-shadow .12s ease; }
+.btn-toon svg { width: 1em; height: 1em; }
+.btn-toon:hover { transform: translateY(-3px) rotate(-1deg); box-shadow: 0 10px 0 var(--ink); }
+.btn-toon:active { transform: translateY(5px); box-shadow: 0 2px 0 var(--ink); }
+.btn-toon:focus-visible { outline: 4px solid var(--paper); outline-offset: 4px; }
+.fight .mini { margin-top: 2px; width: min(420px, 100%); }
+.fight .mini-row { color: rgba(254,245,227,.8); }
+.fight .mini-row .l b, .fight .mini-row .r b { color: var(--paper); }
+.fight .mini-bar { height: 8px; border: 2px solid var(--ink); background: var(--ink); }
 
-.coin-wrap { position: relative; width: 56%; aspect-ratio: 1; animation: bob 6s ease-in-out infinite; perspective: 1000px; }
-.coin { width: 100%; height: 100%; cursor: pointer; transition: transform 1.2s cubic-bezier(.2,.8,.2,1); border: 0; padding: 0; background: none; display: block; border-radius: 50%; }
-.coin svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 40px 50px rgba(0,0,0,.6)); }
-.coin.spin { transform: rotateY(720deg); }
+/* ---------- characters ---------- */
 .team-char { width: 124px; aspect-ratio: 400 / 460; flex-shrink: 0; }
 /* Characters: the rig from github.com/eliascroesus/leftright (js/rig.js) with its own paint tokens. */
 .rig { --ink: #1b1412; --paper: #fef5e3; --skin: #fad6b8; --flush: #e9504b; --vein: #b9334b; --mouth: #52151c; --tongue: #e77687;
   --pants: #353342; --shoe: #2a2320; --hair-blonde: #f2c35e; --hair-blonde-2: #d79a3c; --hair-black: #2b2731; --hair-black-2: #535a78;
   --star: #ffd337; --star-dark: #e19b1b; --laser: #ff2e4d; --red: #e03931; --red-dark: #b7191c; --blue: #3577f8; --blue-dark: #1e59cd;
   display: block; width: 100%; height: 100%; }
-.fighter { position: absolute; bottom: 0; z-index: 4; width: 40%; aspect-ratio: 400 / 460; filter: drop-shadow(0 18px 24px rgba(0,0,0,.45)); }
-.fighter--left { left: -8%; }
-.fighter--right { right: -8%; }
-.fighter .bubble {
-  --line: 3px; --tail-x: 20%; --tail-tip: 8%;
-  position: absolute; bottom: 92%; left: 34%; z-index: 3; display: inline-block; opacity: 0; pointer-events: none; transform-origin: 16% 120%;
-  padding: .55em .85em .5em; border: var(--line) solid #1b1412; border-radius: 26px 20px 28px 18px / 20px 28px 18px 26px;
-  background: #fef5e3; color: #1b1412; box-shadow: 0 4px 0 #1b1412;
-  font-family: "Bowlby One", "Arial Black", Impact, sans-serif; font-weight: 400; font-size: clamp(11px, 1.25vw, 17px); line-height: 1; text-transform: uppercase; white-space: nowrap;
-}
-.fighter--right .bubble { left: auto; right: 34%; --tail-x: calc(80% - 36px); --tail-tip: 92%; transform-origin: 84% 120%; }
-.fighter .bubble::before, .fighter .bubble::after { content: ""; position: absolute; top: 100%; clip-path: polygon(0 0, 100% 0, var(--tail-tip) 100%); }
-.fighter .bubble::before { left: var(--tail-x); width: 30px; height: 24px; margin-top: calc(var(--line) * -1); background: #1b1412; }
-.fighter .bubble::after { left: calc(var(--tail-x) + var(--line) * 1.75); width: calc(30px - var(--line) * 3.5); height: calc(24px - var(--line) * 2.6); margin-top: calc(var(--line) * -1.25); background: #fef5e3; }
 .side-char { aspect-ratio: 400 / 460; }
 .side-char .rig { --ow: 1.5px; }
 .team-char .rig { --ow: 1.5px; }
-.coin-cap { position: absolute; left: 50%; bottom: -7%; transform: translateX(-50%); font-family: var(--mono); font-size: 12.5px; color: var(--fg-3); white-space: nowrap; }
-.coin-cap b { color: var(--fg); font-weight: 600; }
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-.sparkle { position: absolute; width: 34px; height: 34px; top: 10%; left: 16%; animation: twinkle 3.2s ease-in-out infinite; pointer-events: none; }
-@keyframes twinkle { 0%, 100% { opacity: .25; transform: scale(.6) rotate(0); } 50% { opacity: 1; transform: scale(1) rotate(45deg); } }
 
 /* ---------- ticker ---------- */
 .ticker { position: relative; border-block: 1px solid var(--line); background: rgba(255,255,255,.015); overflow: hidden;
@@ -464,8 +467,6 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
   .tok { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 880px) {
-  .hero .wrap { grid-template-columns: minmax(0, 1fr); }
-  .stage { max-width: 480px; }
   .teams { grid-template-columns: minmax(0, 1fr); }
   .vs { position: relative; left: auto; top: auto; transform: none; margin: -32px auto; }
 }
@@ -496,10 +497,9 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .halo, .orbit, .sat > span, .coin-wrap, .sparkle, .track, .tug-l::after, .tug-r::after, .dot-live::before { animation: none !important; }
+  .track, .tug-l::after, .tug-r::after, .dot-live::before { animation: none !important; }
   .tug-l, .knob, .mini-bar i { transition: none; }
   .ticker { overflow-x: auto; }
-  .coin { transition: none; }
 }
 </style>
 
@@ -586,53 +586,23 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
 </header>
 
 <main id="top">
-  <section class="hero">
-    <div class="wrap">
-      <div class="hero-copy">
-        <span class="eyebrow"><span class="dots"><i></i><i></i></span>Solana · Live on pump.fun</span>
-        <h1>
-          <span class="row"><span class="word tb">Left</span> <span class="or">or</span> <span class="word tr">Right.</span></span>
-          <span class="row same">Same coin.</span>
-        </h1>
-        <p class="lede"><b>$LOR</b> is the meme coin for both sides of the aisle. Every buy is a vote. Pick your side, hold the line, and let the chart settle the debate.</p>
-
-
-        <div class="cta-block">
-          <a class="btn-cta" data-link="buy" href="#buy" target="_blank" rel="noopener">Buy $LOR on pump.fun <svg><use href="#i-right"/></svg></a>
-          <span class="cta-note">Fair launch · 0% tax · LP burned</span>
-        </div>
-
-        <a class="mini" href="#count" data-live="wait" aria-label="Live vote count. Jump to the vote">
-          <span class="mini-row"><span class="l"><b data-pct="left">–</b> Left</span><span class="dot-live">LIVE VOTE</span><span class="r">Right <b data-pct="right">–</b></span></span>
-          <span class="mini-bar"><i class="ml" style="width:50%"></i><i class="mr"></i></span>
-        </a>
-      </div>
-
-      <div class="stage">
-        <div class="halo" aria-hidden="true"></div>
-        <div class="orbit o1" aria-hidden="true">
-          <span class="sat b" style="--a:-150deg"><span><svg><use href="#i-left"/></svg></span></span>
-          <span class="sat w" style="--a:-95deg; --s:46px"><span><svg><use href="#i-star"/></svg></span></span>
-          <span class="sat r" style="--a:-35deg"><span><svg><use href="#i-right"/></svg></span></span>
-          <span class="sat w" style="--a:20deg; --s:40px"><span><svg><use href="#i-check"/></svg></span></span>
-          <span class="sat r" style="--a:174deg; --s:40px"><span><svg><use href="#i-star"/></svg></span></span>
-        </div>
-        <div class="orbit o2" aria-hidden="true">
-          <span class="sat r" style="--a:-120deg; --s:42px"><span><svg><use href="#i-flame"/></svg></span></span>
-          <span class="sat d" style="--a:-15deg; --s:42px"><span><svg><use href="#i-capitol"/></svg></span></span>
-          <span class="sat w" style="--a:85deg; --s:36px"><span><svg><use href="#i-star"/></svg></span></span>
-          <span class="sat b" style="--a:165deg; --s:40px"><span><svg><use href="#i-scale"/></svg></span></span>
-        </div>
-
-        <div class="coin-wrap">
-          <button class="coin" id="coin" type="button" aria-label="Spin the $LOR coin">
-            <svg viewBox="0 0 400 412" role="img" aria-label="The $LOR coin: half blue, half red, ringed with 13 stars"><use href="#coin"/></svg>
-          </button>
-          <svg class="sparkle" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 0c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12C6.4 11.4 11.4 6.4 12 0z"/></svg>
-        </div>
-        <div class="fighter fighter--left" id="fighter-left" role="img" aria-label="Lenny, Team Left"></div>
-        <div class="fighter fighter--right" id="fighter-right" role="img" aria-label="Riley, Team Right"></div>
-      </div>
+  <section class="fight" id="top" aria-labelledby="fight-title">
+    <div class="fight__bg" id="fight-bg" aria-hidden="true"></div>
+    <div class="arena" id="arena">
+      <div class="poster" aria-hidden="true"><span class="poster__word poster__word--left">Left</span><span class="poster__word poster__word--right">Right</span></div>
+      <button class="half half--left" type="button" data-pick="left" aria-pressed="false" aria-label="Vote Left with Lenny"></button>
+      <button class="half half--right" type="button" data-pick="right" aria-pressed="false" aria-label="Vote Right with Riley"></button>
+      <div class="fighter fighter--left" id="fighter-left" role="img" aria-label="Lenny, Team Left, yelling at Riley"></div>
+      <div class="fighter fighter--right" id="fighter-right" role="img" aria-label="Riley, Team Right, yelling at Lenny"></div>
+      <p class="hint" id="hint" aria-live="polite">Tap a side to vote</p>
+    </div>
+    <div class="fight__panel">
+      <h1 class="fight__title" id="fight-title"><span class="visually-hidden">$LOR: </span>Pick a side. Same coin.</h1>
+      <a class="btn-toon" data-link="buy" href="#buy" target="_blank" rel="noopener">Buy $LOR on pump.fun <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="mini" href="#count" data-live="wait" aria-label="Live vote count. Jump to the vote">
+        <span class="mini-row"><span class="l"><b data-pct="left">–</b> Left</span><span class="dot-live">LIVE VOTE</span><span class="r">Right <b data-pct="right">–</b></span></span>
+        <span class="mini-bar"><i class="ml" style="width:50%"></i><i class="mr"></i></span>
+      </a>
     </div>
   </section>
 
@@ -893,6 +863,7 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="js/vendor/gsap.min.js"></script>
+<script src="js/fx.js"></script>
 <script src="js/rig.js"></script>
 <script src="js/idle.js"></script>
 <script>
@@ -937,6 +908,7 @@ const CONFIG = {
     root.dataset.side = side;
     document.querySelectorAll("[data-pick]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.pick === side)));
     if (typeof poseFor === "function") poseFor(side);
+    if (hint) hint.textContent = side === "left" ? "You're Team Left · tap Riley to switch" : side === "right" ? "You're Team Right · tap Lenny to switch" : "Tap a side to vote";
     if (opts && opts.vote) { queueVote(side); hop(side); }
   }
   document.querySelectorAll("[data-pick]").forEach(b => b.addEventListener("click", () => setSide(b.dataset.pick, { vote: true })));
@@ -953,12 +925,29 @@ const CONFIG = {
   const hosts = { left: document.getElementById("fighter-left"), right: document.getElementById("fighter-right") };
   hosts.left.appendChild(heroChars.left.el);
   hosts.right.appendChild(heroChars.right.el);
+  // red/blue split behind the fight (js/fx.js), seam through the middle of the arena
+  const fightBg = document.getElementById("fight-bg");
+  const arena = document.getElementById("arena");
+  const split = LR.fx.split(fightBg, { geometry: (w, h) => {
+    const bg = fightBg.getBoundingClientRect(), a = arena.getBoundingClientRect();
+    if (!bg.width || !a.width || !a.height) return { from: [0.54, 0], to: [0.46, 1], corners: [[1, 1], [1, 0]] };
+    const cx = a.left + a.width / 2 - bg.left, cy = a.top + a.height / 2 - bg.top;
+    if (a.width / a.height >= 1.6) {
+      const tilt = Math.tan((5 * Math.PI) / 180); // side by side: near-vertical seam
+      return { from: [(cx + tilt * cy) / w, 0], to: [(cx - tilt * (h - cy)) / w, 1], corners: [[1, 1], [1, 0]] };
+    }
+    const k = a.height / a.width; // stacked: along the diagonal, blue top-left, red bottom-right
+    return { from: [1, (cy - (w - cx) * k) / h], to: [0, (cy + cx * k) / h], corners: [[0, 1], [1, 1]] };
+  } });
+  if ("ResizeObserver" in window) new ResizeObserver(() => split.set({})).observe(arena);
+  const hint = document.getElementById("hint");
+
   let idle = null;
   if (window.gsap && LR.idle) {
     idle = LR.idle.start(heroChars, hosts, { reduced: reduceMotion });
     // pause the loop while the hero is off screen
     if ("IntersectionObserver" in window) {
-      new IntersectionObserver(([e]) => { e.isIntersecting ? idle.resume() : idle.pause(); }).observe(document.querySelector(".stage"));
+      new IntersectionObserver(([e]) => { e.isIntersecting ? idle.resume() : idle.pause(); }).observe(document.getElementById("arena"));
     }
   }
   // your side cheers on the board and the team cards; the other side fumes
@@ -1182,16 +1171,6 @@ const CONFIG = {
   setSide(live.committed || "both");
   render();
   connect();
-
-  // coin spin
-  const coin = document.getElementById("coin");
-  coin.addEventListener("click", () => {
-    if (coin.classList.contains("spin")) return;
-    coin.classList.add("spin");
-  });
-  coin.addEventListener("transitionend", () => {
-    coin.style.transition = "none"; coin.classList.remove("spin"); void coin.offsetWidth; coin.style.transition = "";
-  });
 
   // headline ticker (satire)
   const items = [
