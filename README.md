@@ -1,6 +1,9 @@
 # $LOR: Left or Right
 
-Landing page for the $LOR meme coin. One self-contained file: `index.html` (HTML, CSS and JS inline, fonts from Google Fonts).
+Landing page for the $LOR meme coin: `index.html` plus three scripts in `js/`.
+
+- `js/rig.js` and `js/idle.js` are the character rig and idle loop copied from [eliascroesus/leftright](https://github.com/eliascroesus/leftright), with one change: here Lenny (blue, the guy) is Team Left and Riley (red, the gal) is Team Right.
+- `js/vendor/gsap.min.js` is GSAP 3.13, which drives the idle loop (yelling, blinking, speech bubbles).
 
 ## Before launch
 
@@ -29,7 +32,7 @@ Picking Left or Right anywhere on the page casts that visitor's vote. The live c
 
 ## Deploy
 
-It's a static file. Drag the folder into Netlify or Vercel, or turn on GitHub Pages for this repo (branch root). No build step.
+It's a static site. Drag the folder (with `js/`) into Netlify or Vercel, or turn on GitHub Pages for this repo (branch root). No build step.
 
 ## What's on the page
 
