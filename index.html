@@ -1,0 +1,1046 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>$LOR · Left or Right</title>
+<meta name="description" content="$LOR is the Solana meme coin for both sides of the aisle. Pick a side, toss the coin, buy the bag.">
+<meta property="og:title" content="$LOR · Left or Right">
+<meta property="og:description" content="Every election comes down to a coin toss. So we made the coin.">
+<meta name="theme-color" content="#090c19">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23f0c75e'/%3E%3Cpath d='M16 3a13 13 0 0 0 0 26z' fill='%232f62ff'/%3E%3Cpath d='M16 3a13 13 0 0 1 0 26z' fill='%23f2333f'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=IBM+Plex+Mono:wght@400;600&family=Schibsted+Grotesk:wght@400;500;700;800&display=swap">
+</head>
+<body>
+<style>
+/* Layout: election-night broadcast. The page is split down "the aisle": blue on the left, red on the right, gold coin in the middle. */
+:root {
+  --ink: #090c19;          /* broadcast navy-black */
+  --panel: #10142a;
+  --panel-2: #161b36;
+  --line: rgba(206, 214, 255, .1);
+  --paper: #f4f0e6;        /* campaign-poster off-white */
+  --muted: #9aa0bf;
+  --left: #2f62ff;
+  --left-soft: #7f9dff;
+  --right: #f2333f;
+  --right-soft: #ff8189;
+  --gold: #f0c75e;
+  --gold-deep: #b98a22;
+
+  --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --body: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --wrap: 1200px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --radius: 14px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.55;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+img, svg { max-width: 100%; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+p { margin: 0; }
+
+.wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
+
+/* ---------- atmosphere ---------- */
+.atmo {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(60vw 60vw at -10% 10%, rgba(47, 98, 255, .22), transparent 60%),
+    radial-gradient(60vw 60vw at 110% 10%, rgba(242, 51, 63, .2), transparent 60%),
+    var(--ink);
+}
+.atmo::before { /* the aisle */
+  content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(240, 199, 94, .18) 20%, rgba(240, 199, 94, .06) 80%, transparent);
+}
+.atmo::after { /* broadcast scanlines */
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(to bottom, rgba(255,255,255,.018) 0 1px, transparent 1px 4px);
+}
+
+/* ---------- top bar ---------- */
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: rgba(9, 12, 25, .72);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.bar .wrap { display: flex; align-items: center; gap: 16px; min-height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
+.brand-mark { width: 34px; height: 34px; }
+.brand-name { font-family: var(--display); font-weight: 900; font-size: 26px; letter-spacing: .01em; line-height: 1; }
+.brand-name small { display: block; font-family: var(--mono); font-weight: 400; font-size: 10px; letter-spacing: .14em; color: var(--muted); text-transform: uppercase; margin-top: 3px; }
+
+.nav { display: flex; gap: 4px; margin-left: 12px; }
+.nav a {
+  text-decoration: none; font-size: 14px; font-weight: 500; color: var(--muted);
+  padding: 8px 12px; border-radius: 999px; transition: color .2s, background .2s;
+}
+.nav a:hover { color: var(--paper); background: rgba(255,255,255,.05); }
+
+.bar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.live {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .14em;
+  padding: 7px 11px; border-radius: 6px; background: var(--right); color: #fff;
+}
+.live i { width: 7px; height: 7px; border-radius: 50%; background: #fff; animation: blink 1.4s infinite; }
+@keyframes blink { 50% { opacity: .25; } }
+
+.btn {
+  --b: var(--paper);
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: var(--body); font-weight: 800; font-size: 15px; letter-spacing: .01em;
+  text-decoration: none; cursor: pointer; border: 0;
+  padding: 13px 22px; border-radius: 999px;
+  transition: transform .15s ease, box-shadow .2s ease, background .2s;
+}
+.btn:active { transform: translateY(1px) scale(.99); }
+.btn-buy {
+  background: var(--paper); color: var(--ink);
+  box-shadow: -4px 0 0 var(--left), 4px 0 0 var(--right), 0 10px 30px -10px rgba(240,199,94,.5);
+}
+.btn-buy:hover { box-shadow: -6px 0 0 var(--left), 6px 0 0 var(--right), 0 14px 40px -10px rgba(240,199,94,.65); }
+.btn-ghost { background: rgba(255,255,255,.04); color: var(--paper); border: 1px solid rgba(255,255,255,.14); }
+.btn-ghost:hover { background: rgba(255,255,255,.08); }
+.btn-sm { padding: 9px 16px; font-size: 14px; }
+.btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+/* ---------- hero ---------- */
+.hero { padding-block: clamp(40px, 7vw, 96px) clamp(32px, 5vw, 64px); }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+
+.kicker {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold);
+}
+.kicker::before { content: ""; width: 26px; height: 2px; background: currentColor; }
+
+.headline {
+  font-family: var(--display); font-weight: 900; text-transform: uppercase;
+  font-size: clamp(76px, 13.5vw, 184px); line-height: .82; letter-spacing: -.005em;
+  margin-top: 18px;
+}
+.headline span { display: block; }
+.headline .l { color: var(--left); text-shadow: 0 0 60px rgba(47,98,255,.35); }
+.headline .r { color: var(--right); text-shadow: 0 0 60px rgba(242,51,63,.35); }
+.headline .or {
+  font-size: .38em; line-height: 1; letter-spacing: .04em;
+  color: transparent; -webkit-text-stroke: 1.5px var(--paper);
+  display: flex; align-items: center; gap: .3em; padding-block: .14em;
+}
+.headline .or::after { content: ""; flex: 1; height: 2px; max-width: 3.5em; background: linear-gradient(90deg, var(--left), var(--right)); }
+
+.lede { margin-top: 26px; font-size: clamp(17px, 1.6vw, 20px); color: #c9cbe0; max-width: 34em; }
+.lede b { color: var(--paper); font-weight: 700; }
+
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 12.5px; color: #c9cbe0;
+  padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.025);
+}
+.chip b { color: var(--paper); font-weight: 600; }
+.chip i { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+.chip i.bl { background: var(--left); } .chip i.rd { background: var(--right); }
+
+.ca {
+  margin-top: 22px; display: flex; align-items: center; gap: 10px; max-width: 100%;
+  padding: 6px 6px 6px 14px; border-radius: 12px; border: 1px solid rgba(240,199,94,.28); background: rgba(240,199,94,.05);
+  width: fit-content;
+}
+.ca-label { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .14em; color: var(--gold); flex-shrink: 0; }
+.ca-value { font-family: var(--mono); font-size: 13.5px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.copy {
+  display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;
+  font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--ink);
+  background: var(--gold); border: 0; border-radius: 8px; padding: 7px 10px; cursor: pointer;
+}
+.copy svg { width: 14px; height: 14px; }
+
+/* ---------- the coin ---------- */
+.stage { position: relative; display: grid; place-items: center; aspect-ratio: 1; max-width: 560px; width: 100%; justify-self: center; }
+.stage::before { /* spotlight */
+  content: ""; position: absolute; inset: 8%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,199,94,.28), rgba(240,199,94,0) 62%);
+  filter: blur(10px);
+}
+.ring { position: absolute; border-radius: 50%; border: 1px dashed rgba(255,255,255,.1); }
+.ring.one { inset: 2%; } .ring.two { inset: 15%; border-style: solid; border-color: rgba(255,255,255,.05); }
+
+.toss { position: relative; width: 62%; aspect-ratio: 1; perspective: 1200px; }
+.toss.flying { animation: arc 1.6s cubic-bezier(.3,.0,.3,1); }
+@keyframes arc { 0% { transform: translateY(0) scale(1); } 45% { transform: translateY(-34%) scale(1.08); } 100% { transform: translateY(0) scale(1); } }
+.coin {
+  position: absolute; inset: 0; transform-style: preserve-3d;
+  transition: transform 1.6s cubic-bezier(.2,.75,.25,1);
+  cursor: pointer;
+}
+.coin-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 50%;
+  filter: drop-shadow(0 30px 40px rgba(0,0,0,.55)); }
+.coin-face.back { transform: rotateY(180deg); }
+.coin-face svg { width: 100%; height: 100%; display: block; }
+.idle { animation: wobble 6s ease-in-out infinite; }
+@keyframes wobble { 0%,100% { transform: rotateY(-14deg) rotateX(4deg); } 50% { transform: rotateY(14deg) rotateX(-4deg); } }
+
+.pin {
+  position: absolute; z-index: 2; display: grid; place-items: center; text-align: center;
+  width: clamp(74px, 9vw, 104px); aspect-ratio: 1; border-radius: 50%;
+  font-family: var(--display); font-weight: 900; text-transform: uppercase; line-height: .92;
+  font-size: clamp(11px, 1.15vw, 14px); letter-spacing: .02em; padding: 12px;
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,.85), inset 0 0 0 5px rgba(0,0,0,.15), 0 14px 26px -8px rgba(0,0,0,.6);
+  animation: float 7s ease-in-out infinite;
+}
+.pin.bl { background: radial-gradient(circle at 35% 30%, #5a83ff, var(--left) 60%, #1a3fc0); color: #fff; }
+.pin.rd { background: radial-gradient(circle at 35% 30%, #ff6670, var(--right) 60%, #b51522); color: #fff; }
+.pin.pp { background: radial-gradient(circle at 35% 30%, #fffaf0, var(--paper) 60%, #d5cfbf); color: var(--ink); }
+.pin.pp em { color: var(--right); font-style: normal; }
+.pin small { display: block; font-size: .62em; letter-spacing: .12em; opacity: .85; margin-top: 3px; }
+.pin.p1 { top: 4%; left: 8%; transform: rotate(-12deg); animation-delay: -1s; }
+.pin.p2 { top: 0; right: 14%; transform: rotate(9deg); animation-delay: -3s; }
+.pin.p3 { bottom: 14%; left: 0; transform: rotate(8deg); animation-delay: -5s; }
+.pin.p4 { bottom: 6%; right: 4%; transform: rotate(-8deg); animation-delay: -2s; }
+.pin.p5 { top: 42%; right: -2%; transform: rotate(14deg); animation-delay: -4s; }
+@keyframes float { 0%,100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+
+.toss-ui { position: absolute; bottom: -2%; left: 50%; transform: translateX(-50%); z-index: 3;
+  display: flex; flex-direction: column; align-items: center; gap: 10px; width: max-content; max-width: 100%; }
+.verdict { font-family: var(--mono); font-size: 13px; color: var(--muted); text-align: center; min-height: 1.5em; }
+.verdict b.l { color: var(--left-soft); } .verdict b.r { color: var(--right-soft); }
+
+/* ---------- breaking ticker ---------- */
+.ticker { border-block: 1px solid var(--line); background: rgba(16,20,42,.75); display: flex; align-items: stretch; overflow: hidden; }
+.ticker-tag {
+  flex-shrink: 0; display: flex; align-items: center; gap: 8px; z-index: 1;
+  font-family: var(--display); font-weight: 900; font-size: 20px; letter-spacing: .06em; text-transform: uppercase;
+  padding: 0 18px; background: var(--right); color: #fff;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%); padding-right: 28px;
+}
+.ticker-track { display: flex; width: max-content; animation: marquee 70s linear infinite; }
+.ticker:hover .ticker-track { animation-play-state: paused; }
+.ticker-item {
+  display: flex; align-items: center; gap: 14px; white-space: nowrap; padding: 15px 26px;
+  font-family: var(--display); font-weight: 800; font-size: 19px; letter-spacing: .03em; text-transform: uppercase;
+}
+.ticker-item::after { content: "★"; color: var(--gold); font-size: 12px; margin-left: 12px; }
+.ticker-item .tm { font-family: var(--mono); font-weight: 400; font-size: 11px; color: var(--muted); letter-spacing: .06em; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* ---------- fact strip ---------- */
+.facts { padding-block: clamp(32px, 5vw, 56px); }
+.facts-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: var(--radius); background: rgba(16,20,42,.6); }
+.fact { padding: 22px 22px 20px; border-left: 1px solid var(--line); min-width: 0; }
+.fact:first-child { border-left: 0; }
+.fact-k { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.fact-v { font-family: var(--display); font-weight: 900; font-size: clamp(28px, 3vw, 40px); overflow-wrap: anywhere; line-height: 1; margin-top: 10px; font-variant-numeric: tabular-nums; }
+.fact-s { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.fact a.fact-v { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--gold); }
+.fact a.fact-v svg { width: 22px; height: 22px; }
+
+/* ---------- sections ---------- */
+section.block { padding-block: clamp(56px, 8vw, 110px); }
+.sec-head { display: grid; gap: 14px; max-width: 760px; margin-bottom: clamp(32px, 4vw, 52px); }
+.sec-head.center { margin-inline: auto; text-align: center; justify-items: center; }
+.sec-title { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(46px, 7vw, 92px); line-height: .88; letter-spacing: -.003em; }
+.sec-title .l { color: var(--left); } .sec-title .r { color: var(--right); } .sec-title .g { color: var(--gold); }
+.sec-sub { color: #c1c4da; font-size: 18px; max-width: 38em; }
+
+/* ---------- candidates ---------- */
+.aisle { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: clamp(16px, 2.5vw, 32px); align-items: stretch; }
+.aisle-mid { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.aisle-mid::before, .aisle-mid::after { content: ""; flex: 1; width: 1px; background: linear-gradient(to bottom, transparent, rgba(240,199,94,.45), transparent); }
+.aisle-mid span { writing-mode: vertical-rl; font-family: var(--mono); font-size: 11px; letter-spacing: .3em; color: var(--gold); text-transform: uppercase; }
+
+.cand {
+  --c: var(--left); --c-soft: var(--left-soft);
+  position: relative; overflow: hidden; border-radius: 22px; padding: clamp(22px, 3vw, 34px);
+  background:
+    radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--c) 30%, transparent), transparent 70%),
+    var(--panel);
+  border: 1px solid color-mix(in srgb, var(--c) 35%, transparent);
+  display: flex; flex-direction: column; gap: 18px; min-width: 0;
+}
+.cand.right { --c: var(--right); --c-soft: var(--right-soft); }
+.cand-art { width: 100%; max-width: 300px; margin-inline: auto; aspect-ratio: 240 / 250; }
+.cand-art svg { width: 100%; height: 100%; display: block; }
+.cand-tag { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--c-soft); }
+.cand-name { font-family: var(--display); font-weight: 900; font-size: clamp(48px, 5.5vw, 72px); line-height: .85; text-transform: uppercase; }
+.cand-slogan { font-family: var(--display); font-weight: 800; font-size: 22px; text-transform: uppercase; letter-spacing: .02em; color: var(--c-soft); }
+.platform { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.platform li { display: grid; grid-template-columns: 20px minmax(0,1fr); gap: 10px; color: #d4d6e8; font-size: 15.5px; }
+.platform li::before { content: "★"; color: var(--c); font-size: 13px; line-height: 1.75; }
+.approval { display: grid; gap: 8px; }
+.approval-row { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.approval-row b { color: var(--paper); font-weight: 600; }
+.meter { height: 10px; border-radius: 999px; background: rgba(255,255,255,.06); overflow: hidden; }
+.meter i { display: block; height: 100%; width: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--c), var(--c-soft)); }
+.cand .btn { margin-top: auto; align-self: flex-start; background: var(--c); color: #fff; }
+.cand .btn:hover { filter: brightness(1.1); }
+
+.agree {
+  margin-top: clamp(24px, 3vw, 36px); text-align: center;
+  font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(22px, 2.6vw, 30px); letter-spacing: .02em;
+  padding: 18px 22px; border-radius: 16px; border: 1px dashed rgba(240,199,94,.4); color: var(--gold); background: rgba(240,199,94,.04);
+}
+
+/* ---------- the budget (tokenomics) ---------- */
+.budget { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(16px, 2.5vw, 28px); }
+.panel { border: 1px solid var(--line); border-radius: 22px; background: var(--panel); padding: clamp(22px, 3vw, 36px); min-width: 0; }
+.supply-k { font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.supply-v { font-family: var(--display); font-weight: 900; font-size: clamp(46px, 6.4vw, 92px); line-height: .9; margin-top: 10px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.supply-v small { font-size: .32em; color: var(--gold); letter-spacing: .04em; }
+.split-bar { margin-top: 28px; height: 54px; border-radius: 12px; overflow: hidden; display: flex; position: relative; }
+.split-bar span { flex: 1; display: flex; align-items: center; padding-inline: 16px; font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: 20px; letter-spacing: .04em; }
+.split-bar .a { background: var(--left); }
+.split-bar .b { background: var(--right); justify-content: flex-end; }
+.split-bar::after { content: "100% PUBLIC"; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .12em; background: var(--ink); color: var(--gold);
+  padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(240,199,94,.4); white-space: nowrap; }
+.split-note { margin-top: 14px; color: var(--muted); font-size: 14.5px; }
+
+.lines { margin-top: 28px; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.line { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.line span:first-child { color: #c1c4da; }
+.line span:last-child { font-family: var(--mono); font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+
+.ballot { background: var(--paper); color: var(--ink); position: relative; }
+.ballot-head { /* perforation under the header */
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  padding-bottom: 18px; margin-inline: calc(-1 * clamp(22px, 3vw, 36px)); padding-inline: clamp(22px, 3vw, 36px);
+  border-bottom: 2px dashed rgba(9,12,25,.2);
+}
+.ballot-title { font-family: var(--display); font-weight: 900; font-size: 30px; text-transform: uppercase; line-height: 1; }
+.ballot-no { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: #5b5f78; }
+.ballot-list { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 14px; }
+.ballot-list li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 14px; align-items: center; font-weight: 500; font-size: 16px; }
+.ballot-list .box { width: 28px; height: 28px; border: 2px solid var(--ink); border-radius: 5px; display: grid; place-items: center; }
+.ballot-list .box svg { width: 22px; height: 22px; }
+.ballot-list li.no { color: #5b5f78; }
+.ballot-list li small { display: block; font-family: var(--mono); font-size: 11.5px; color: #5b5f78; font-weight: 400; }
+.ballot-sign { margin-top: 26px; padding-top: 14px; border-top: 1px solid rgba(9,12,25,.2); font-family: var(--mono); font-size: 11.5px; color: #5b5f78; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+/* ---------- how to vote ---------- */
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; counter-reset: s; }
+.step { position: relative; padding: 26px 22px 24px; border-radius: 18px; border: 1px solid var(--line); background: var(--panel); display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.step-n { font-family: var(--display); font-weight: 900; font-size: 60px; line-height: .8; color: transparent; -webkit-text-stroke: 1.5px var(--gold); }
+.step h3 { font-family: var(--display); font-weight: 900; font-size: 30px; text-transform: uppercase; line-height: .95; }
+.step p { color: #c1c4da; font-size: 15px; }
+.step p a { color: var(--gold); text-underline-offset: 3px; }
+.step:not(:last-child)::after {
+  content: ""; position: absolute; top: 46px; right: -12px; width: 8px; height: 8px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); transform: rotate(45deg); opacity: .6;
+}
+
+/* ---------- campaign trail (roadmap) ---------- */
+.trail { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; position: relative; }
+.trail::before { content: ""; position: absolute; left: 0; right: 0; top: 13px; height: 2px; background: linear-gradient(90deg, var(--left), var(--gold), var(--right)); opacity: .7; }
+.stop { position: relative; padding: 46px 22px 0 0; min-width: 0; }
+.stop::before { content: ""; position: absolute; top: 4px; left: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--ink); border: 3px solid var(--gold); }
+.stop.now::before { background: var(--gold); box-shadow: 0 0 0 6px rgba(240,199,94,.18); }
+.stop-k { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.stop h3 { font-family: var(--display); font-weight: 900; font-size: 34px; text-transform: uppercase; line-height: .95; margin-top: 8px; }
+.stop ul { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; color: #c1c4da; font-size: 15px; }
+.stop li { padding-left: 16px; position: relative; }
+.stop li::before { content: ""; position: absolute; left: 0; top: .7em; width: 6px; height: 2px; background: var(--muted); }
+.trail-foot { margin-top: 36px; font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+
+/* ---------- press conference (faq) ---------- */
+.faq { display: grid; gap: 10px; max-width: 860px; margin-inline: auto; }
+.faq details { border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+.faq summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; gap: 14px; padding: 20px 22px;
+  font-weight: 700; font-size: 18px;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary .who { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .12em; color: var(--ink); background: var(--gold); padding: 4px 7px; border-radius: 5px; flex-shrink: 0; }
+.faq summary::after { content: "+"; margin-left: auto; font-family: var(--mono); font-size: 22px; color: var(--muted); transition: transform .2s; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq .ans { padding: 0 22px 22px 22px; color: #c1c4da; display: grid; grid-template-columns: auto minmax(0,1fr); gap: 14px; }
+.faq .ans .who { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .12em; color: var(--paper); background: rgba(255,255,255,.08); padding: 4px 7px; border-radius: 5px; height: fit-content; }
+
+/* ---------- final call ---------- */
+.final { padding-block: clamp(56px, 8vw, 110px); }
+.final-card {
+  position: relative; overflow: hidden; border-radius: 28px; padding: clamp(32px, 6vw, 72px);
+  background:
+    linear-gradient(100deg, var(--left) 0 50%, var(--right) 50% 100%);
+  text-align: center; display: grid; justify-items: center; gap: 22px;
+}
+.final-card::before { content: ""; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 120%, rgba(9,12,25,.55), transparent 60%),
+              repeating-linear-gradient(-45deg, rgba(255,255,255,.05) 0 2px, transparent 2px 14px); }
+.final-card > * { position: relative; }
+.final-title { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(54px, 9vw, 128px); line-height: .84; color: #fff; text-shadow: 0 6px 0 rgba(9,12,25,.25); }
+.final-sub { font-size: 19px; color: rgba(255,255,255,.9); max-width: 32em; }
+.final-card .btn-buy { box-shadow: 0 16px 40px -10px rgba(0,0,0,.5); }
+.final-card .btn-ghost { background: rgba(9,12,25,.3); border-color: rgba(255,255,255,.35); }
+
+/* ---------- footer ---------- */
+footer { border-top: 1px solid var(--line); padding-block: 40px 56px; }
+.foot { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 28px; align-items: start; }
+.socials { display: flex; gap: 10px; flex-wrap: wrap; }
+.social { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); text-decoration: none; font-weight: 600; font-size: 14px; background: var(--panel); }
+.social:hover { border-color: rgba(255,255,255,.25); }
+.social svg { width: 16px; height: 16px; }
+.disclaimer { margin-top: 24px; font-size: 13px; color: var(--muted); max-width: 70em; line-height: 1.6; }
+
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+  background: var(--paper); color: var(--ink); font-weight: 700; font-size: 14px; padding: 10px 16px; border-radius: 999px; transition: .25s; z-index: 50; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1020px) {
+  .nav { display: none; }
+  .facts-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .fact:nth-child(4) { border-left: 0; }
+  .fact:nth-child(n+4) { border-top: 1px solid var(--line); }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .step:nth-child(2)::after { display: none; }
+  .trail { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px; }
+  .trail::before { display: none; }
+}
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); }
+  .stage { max-width: 480px; }
+  .budget { grid-template-columns: minmax(0, 1fr); }
+  .aisle { grid-template-columns: minmax(0, 1fr); }
+  .aisle-mid { flex-direction: row; }
+  .aisle-mid::before, .aisle-mid::after { height: 1px; width: auto; background: linear-gradient(90deg, transparent, rgba(240,199,94,.45), transparent); }
+  .aisle-mid span { writing-mode: horizontal-tb; }
+  .foot { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .live { display: none; }
+  .brand-name small { display: none; }
+  .facts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fact { border-left: 0; border-top: 1px solid var(--line); }
+  .fact:nth-child(-n+2) { border-top: 0; }
+  .fact:nth-child(even) { border-left: 1px solid var(--line); }
+  .fact:last-child { grid-column: 1 / -1; border-left: 0; }
+  .fact { padding: 18px 16px; }
+  .fact-v { font-size: 26px; }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+  .step::after { display: none; }
+  .trail { grid-template-columns: minmax(0, 1fr); }
+  .pin { width: 70px; font-size: 10px; padding: 9px; }
+  .pin.p5 { display: none; }
+  .ticker-item { font-size: 16px; padding: 13px 18px; }
+  .ticker-tag { font-size: 16px; padding-left: 12px; }
+  .ca { width: 100%; }
+  .split-bar span { font-size: 16px; padding-inline: 10px; }
+  .faq summary { font-size: 16px; padding: 18px; }
+  .faq .ans { padding: 0 18px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .idle, .pin, .live i { animation: none; }
+  .ticker-track { animation: none; }
+  .ticker { overflow-x: auto; }
+  .coin { transition-duration: .01s; }
+  .toss.flying { animation: none; }
+}
+</style>
+
+<div class="atmo" aria-hidden="true"></div>
+
+<!-- reusable coin face art -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffe9a3"/><stop offset=".45" stop-color="#f0c75e"/><stop offset="1" stop-color="#a87a17"/>
+    </linearGradient>
+    <radialGradient id="faceL" cx=".35" cy=".3" r=".85">
+      <stop offset="0" stop-color="#5f86ff"/><stop offset=".55" stop-color="#2f62ff"/><stop offset="1" stop-color="#14329c"/>
+    </radialGradient>
+    <radialGradient id="faceR" cx=".35" cy=".3" r=".85">
+      <stop offset="0" stop-color="#ff6c75"/><stop offset=".55" stop-color="#f2333f"/><stop offset="1" stop-color="#9a0f1b"/>
+    </radialGradient>
+    <path id="ringPath" d="M200,200 m-146,0 a146,146 0 1,1 292,0 a146,146 0 1,1 -292,0"/>
+    <symbol id="star" viewBox="0 0 24 24"><path d="M12 1.8l2.9 6.6 7.2.6-5.5 4.7 1.7 7-6.3-3.8-6.3 3.8 1.7-7L1.9 9l7.2-.6z"/></symbol>
+  </defs>
+</svg>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="$LOR home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="15.5" fill="url(#rim)"/>
+        <path d="M16 3a13 13 0 0 0 0 26z" fill="#2f62ff"/><path d="M16 3a13 13 0 0 1 0 26z" fill="#f2333f"/>
+        <path d="M13 11l-4 5 4 5M19 11l4 5-4 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="brand-name">$LOR<small>Left or Right</small></span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#candidates">Candidates</a>
+      <a href="#budget">Tokenomics</a>
+      <a href="#vote">How to buy</a>
+      <a href="#trail">Roadmap</a>
+      <a href="#press">FAQ</a>
+    </nav>
+    <div class="bar-right">
+      <span class="live"><i></i>LIVE</span>
+      <a class="btn btn-buy btn-sm" data-link="buy" href="#vote" target="_blank" rel="noopener">Buy $LOR</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="kicker">Election night never ends · Solana</span>
+        <h1 class="headline" aria-label="Left or Right?">
+          <span class="l">Left</span>
+          <span class="or">or</span>
+          <span class="r">Right?</span>
+        </h1>
+        <p class="lede">Every election comes down to a coin toss, so we made the coin. <b>$LOR</b> is the meme coin for <b>both sides of the aisle</b>. Pick a side, buy the bag, and argue about it in the replies forever.</p>
+        <div class="ctas">
+          <a class="btn btn-buy" data-link="buy" href="#vote" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h12M11 6l6 6-6 6"/><path d="M20 4v16"/></svg>
+            Cast your vote. Buy $LOR
+          </a>
+          <a class="btn btn-ghost" href="#candidates">Meet the candidates</a>
+        </div>
+        <div class="ca" role="group" aria-label="Contract address">
+          <span class="ca-label">CA</span>
+          <span class="ca-value" data-ca>Coming soon</span>
+          <button class="copy" type="button" data-copy>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+            Copy
+          </button>
+        </div>
+        <div class="chips">
+          <span class="chip"><i class="bl"></i><b>1B</b> supply</span>
+          <span class="chip"><i></i><b>0%</b> tax, both ways</span>
+          <span class="chip"><i class="rd"></i>LP <b>burned</b></span>
+          <span class="chip"><i></i><b>0</b> campaign funds to team</span>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="ring one" aria-hidden="true"></div>
+        <div class="ring two" aria-hidden="true"></div>
+
+        <span class="pin bl p1" aria-hidden="true"><span>Yes we<br>pump<small>LEFT</small></span></span>
+        <span class="pin rd p2" aria-hidden="true"><span>Make candles green again<small>RIGHT</small></span></span>
+        <span class="pin pp p3" aria-hidden="true"><span>Read my lips:<br><em>no sells</em></span></span>
+        <span class="pin rd p4" aria-hidden="true"><span>Drain the<br>order book</span></span>
+        <span class="pin bl p5" aria-hidden="true"><span>Feel the<br>burn</span></span>
+
+        <div class="toss" id="toss">
+          <div class="coin idle" id="coin" role="img" aria-label="The $LOR coin. Blue LEFT on one side, red RIGHT on the other.">
+            <div class="coin-face front">
+              <svg viewBox="0 0 400 400">
+                <circle cx="200" cy="200" r="198" fill="url(#rim)"/>
+                <circle cx="200" cy="200" r="186" fill="none" stroke="#a87a17" stroke-width="10" stroke-dasharray="2 5"/>
+                <circle cx="200" cy="200" r="174" fill="url(#faceL)"/>
+                <text font-family="Big Shoulders Display, Impact, sans-serif" font-weight="800" font-size="25" letter-spacing="5" fill="#f4f0e6" opacity=".88">
+                  <textPath href="#ringPath" startOffset="0">IN CHART WE TRUST ★ E PLURIBUS PUMPUM ★ IN CHART WE TRUST ★</textPath>
+                </text>
+                <circle cx="200" cy="200" r="122" fill="none" stroke="#f4f0e6" stroke-opacity=".35" stroke-width="2"/>
+                <path d="M236 122 h-72 M180 106 l-16 16 16 16" fill="none" stroke="#f0c75e" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="200" y="214" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="82" fill="#f4f0e6">LEFT</text>
+                <text x="200" y="258" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="600" font-size="20" letter-spacing="6" fill="#f0c75e">$LOR</text>
+                <use href="#star" x="128" y="280" width="20" height="20" fill="#f4f0e6"/>
+                <use href="#star" x="190" y="288" width="20" height="20" fill="#f4f0e6"/>
+                <use href="#star" x="252" y="280" width="20" height="20" fill="#f4f0e6"/>
+                <ellipse cx="150" cy="110" rx="90" ry="44" fill="#fff" opacity=".08" transform="rotate(-28 150 110)"/>
+              </svg>
+            </div>
+            <div class="coin-face back">
+              <svg viewBox="0 0 400 400">
+                <circle cx="200" cy="200" r="198" fill="url(#rim)"/>
+                <circle cx="200" cy="200" r="186" fill="none" stroke="#a87a17" stroke-width="10" stroke-dasharray="2 5"/>
+                <circle cx="200" cy="200" r="174" fill="url(#faceR)"/>
+                <text font-family="Big Shoulders Display, Impact, sans-serif" font-weight="800" font-size="25" letter-spacing="5" fill="#f4f0e6" opacity=".88">
+                  <textPath href="#ringPath" startOffset="0">IN CHART WE TRUST ★ E PLURIBUS PUMPUM ★ IN CHART WE TRUST ★</textPath>
+                </text>
+                <circle cx="200" cy="200" r="122" fill="none" stroke="#f4f0e6" stroke-opacity=".35" stroke-width="2"/>
+                <path d="M164 122 h72 M220 106 l16 16 -16 16" fill="none" stroke="#f0c75e" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="200" y="214" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="82" fill="#f4f0e6">RIGHT</text>
+                <text x="200" y="258" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="600" font-size="20" letter-spacing="6" fill="#f0c75e">$LOR</text>
+                <use href="#star" x="128" y="280" width="20" height="20" fill="#f4f0e6"/>
+                <use href="#star" x="190" y="288" width="20" height="20" fill="#f4f0e6"/>
+                <use href="#star" x="252" y="280" width="20" height="20" fill="#f4f0e6"/>
+                <ellipse cx="150" cy="110" rx="90" ry="44" fill="#fff" opacity=".08" transform="rotate(-28 150 110)"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="toss-ui">
+          <button class="btn btn-ghost btn-sm" type="button" id="tossBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></svg>
+            Toss the coin
+          </button>
+          <p class="verdict" id="verdict" aria-live="polite">Undecided? Let the coin pick for you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BREAKING -->
+  <div class="ticker" aria-label="Breaking news (satire)">
+    <div class="ticker-tag" aria-hidden="true">Breaking</div>
+    <div class="ticker-track" id="ticker"></div>
+  </div>
+
+  <!-- FACTS -->
+  <div class="facts">
+    <div class="wrap">
+      <div class="facts-grid">
+        <div class="fact"><div class="fact-k">Chain</div><div class="fact-v">Solana</div><div class="fact-s">Launched on pump.fun</div></div>
+        <div class="fact"><div class="fact-k">Supply</div><div class="fact-v">1B</div><div class="fact-s">1,000,000,000. Mint revoked.</div></div>
+        <div class="fact"><div class="fact-k">Tax</div><div class="fact-v">0 / 0</div><div class="fact-s">Buy / sell</div></div>
+        <div class="fact"><div class="fact-k">Ticker</div><div class="fact-v">$LOR</div><div class="fact-s">Left or Right</div></div>
+        <div class="fact"><div class="fact-k">Live chart</div>
+          <a class="fact-v" data-link="chart" href="#vote" target="_blank" rel="noopener">Polls
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>
+          </a>
+          <div class="fact-s">DexScreener</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CANDIDATES -->
+  <section class="block" id="candidates">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">The candidates</span>
+        <h2 class="sec-title">Two parties.<br><span class="g">One chart.</span></h2>
+        <p class="sec-sub">Both candidates are running on the same platform: number go up. They just can't agree on which direction up is.</p>
+      </div>
+
+      <div class="aisle">
+        <article class="cand left">
+          <div class="cand-art">
+            <svg viewBox="0 0 240 250" role="img" aria-label="Lefty, a blue coin candidate with hair swept left, waving from a podium">
+              <defs>
+                <radialGradient id="headL" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#6c90ff"/><stop offset="1" stop-color="#1e46d6"/></radialGradient>
+              </defs>
+              <ellipse cx="120" cy="244" rx="88" ry="6" fill="#000" opacity=".35"/>
+              <!-- body -->
+              <path d="M58 200 q0 -46 62 -50 q62 4 62 50z" fill="#14183a"/>
+              <path d="M104 152 l16 30 16 -30z" fill="#f4f0e6"/>
+              <path d="M117 158 h6 l4 8 -7 26 -7 -26z" fill="#2f62ff"/>
+              <!-- waving arm -->
+              <path d="M64 176 q-24 -22 -26 -60" fill="none" stroke="#14183a" stroke-width="16" stroke-linecap="round"/>
+              <circle cx="38" cy="108" r="13" fill="#f0c75e"/>
+              <path d="M29 100 l-6 -9 M35 96 l-3 -11 M42 96 l1 -11" stroke="#f0c75e" stroke-width="5" stroke-linecap="round"/>
+              <!-- head (coin) -->
+              <circle cx="120" cy="92" r="66" fill="url(#rim)"/>
+              <circle cx="120" cy="92" r="57" fill="url(#headL)"/>
+              <!-- hair swoop to the left -->
+              <path d="M178 62 q-30 -42 -98 -24 q-24 8 -34 34 q22 -20 54 -18 q-16 6 -20 18 q30 -22 98 -10z" fill="#0d1440"/>
+              <!-- eyes looking left -->
+              <ellipse cx="98" cy="92" rx="13" ry="15" fill="#fff"/><ellipse cx="140" cy="92" rx="13" ry="15" fill="#fff"/>
+              <circle cx="93" cy="95" r="6.5" fill="#090c19"/><circle cx="135" cy="95" r="6.5" fill="#090c19"/>
+              <circle cx="91" cy="92" r="2" fill="#fff"/><circle cx="133" cy="92" r="2" fill="#fff"/>
+              <path d="M84 72 q12 -8 26 -2 M128 70 q12 -6 26 2" stroke="#0d1440" stroke-width="5" stroke-linecap="round" fill="none"/>
+              <path d="M98 122 q20 18 42 0" stroke="#090c19" stroke-width="5" stroke-linecap="round" fill="#090c19"/>
+              <path d="M104 126 q14 9 28 0" fill="#f2333f" opacity=".75"/>
+              <!-- podium -->
+              <path d="M44 196 h152 l-12 52 h-128z" fill="#f4f0e6"/>
+              <rect x="40" y="190" width="160" height="12" rx="3" fill="#d9d3c4"/>
+              <circle cx="120" cy="222" r="17" fill="#2f62ff"/>
+              <text x="120" y="230" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="24" fill="#f4f0e6">L</text>
+              <path d="M84 196 v-12 M156 196 v-12" stroke="#5b5f78" stroke-width="3"/>
+              <rect x="80" y="178" width="8" height="10" rx="3" fill="#2a2f50"/><rect x="152" y="178" width="8" height="10" rx="3" fill="#2a2f50"/>
+            </svg>
+          </div>
+          <div>
+            <div class="cand-tag">Candidate for the left side of the chart</div>
+            <h3 class="cand-name">Lefty</h3>
+          </div>
+          <p class="cand-slogan">“Yes we pump.”</p>
+          <ul class="platform">
+            <li>Wealth redistribution, from paper hands to diamond hands.</li>
+            <li>Free airdrops for all. Eventually. Probably. Read the fine print.</li>
+            <li>Tax the sellers. In vibes only, the contract is 0%.</li>
+            <li>Universal basic bags for every wallet that holds the line.</li>
+          </ul>
+          <div class="approval">
+            <div class="approval-row"><span>Approval among Lefty voters</span><b>100%</b></div>
+            <div class="meter"><i></i></div>
+          </div>
+          <a class="btn" data-vote="LEFT" href="#" target="_blank" rel="noopener">I'm voting LEFT. Post it</a>
+        </article>
+
+        <div class="aisle-mid" aria-hidden="true"><span>The aisle</span></div>
+
+        <article class="cand right">
+          <div class="cand-art">
+            <svg viewBox="0 0 240 250" role="img" aria-label="Righty, a red coin candidate with hair swept right, pointing from a podium">
+              <defs>
+                <radialGradient id="headR" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#ff7680"/><stop offset="1" stop-color="#c21524"/></radialGradient>
+              </defs>
+              <ellipse cx="120" cy="244" rx="88" ry="6" fill="#000" opacity=".35"/>
+              <path d="M58 200 q0 -46 62 -50 q62 4 62 50z" fill="#14183a"/>
+              <path d="M104 152 l16 30 16 -30z" fill="#f4f0e6"/>
+              <path d="M117 158 h6 l4 8 -7 26 -7 -26z" fill="#f2333f"/>
+              <!-- pointing arm -->
+              <path d="M176 176 q24 -22 26 -60" fill="none" stroke="#14183a" stroke-width="16" stroke-linecap="round"/>
+              <circle cx="202" cy="108" r="13" fill="#f0c75e"/>
+              <path d="M206 98 l4 -16" stroke="#f0c75e" stroke-width="7" stroke-linecap="round"/>
+              <circle cx="120" cy="92" r="66" fill="url(#rim)"/>
+              <circle cx="120" cy="92" r="57" fill="url(#headR)"/>
+              <!-- hair swoop to the right -->
+              <path d="M62 62 q30 -42 98 -24 q24 8 34 34 q-22 -20 -54 -18 q16 6 20 18 q-30 -22 -98 -10z" fill="#4a0a12"/>
+              <ellipse cx="100" cy="92" rx="13" ry="15" fill="#fff"/><ellipse cx="142" cy="92" rx="13" ry="15" fill="#fff"/>
+              <circle cx="105" cy="95" r="6.5" fill="#090c19"/><circle cx="147" cy="95" r="6.5" fill="#090c19"/>
+              <circle cx="107" cy="92" r="2" fill="#fff"/><circle cx="149" cy="92" r="2" fill="#fff"/>
+              <path d="M86 72 q12 -6 26 -2 M130 70 q14 -8 26 2" stroke="#4a0a12" stroke-width="5" stroke-linecap="round" fill="none"/>
+              <path d="M100 120 q20 14 42 0" stroke="#090c19" stroke-width="5" stroke-linecap="round" fill="none"/>
+              <path d="M44 196 h152 l-12 52 h-128z" fill="#f4f0e6"/>
+              <rect x="40" y="190" width="160" height="12" rx="3" fill="#d9d3c4"/>
+              <circle cx="120" cy="222" r="17" fill="#f2333f"/>
+              <text x="120" y="230" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="24" fill="#f4f0e6">R</text>
+              <path d="M84 196 v-12 M156 196 v-12" stroke="#5b5f78" stroke-width="3"/>
+              <rect x="80" y="178" width="8" height="10" rx="3" fill="#2a2f50"/><rect x="152" y="178" width="8" height="10" rx="3" fill="#2a2f50"/>
+            </svg>
+          </div>
+          <div>
+            <div class="cand-tag">Candidate for the right side of the chart</div>
+            <h3 class="cand-name">Righty</h3>
+          </div>
+          <p class="cand-slogan">“Make candles green again.”</p>
+          <ul class="platform">
+            <li>Build the wall. Of buy orders. And make the bears pay for it.</li>
+            <li>Lower fees, fewer rules. Zero tax was already the law.</li>
+            <li>Bring liquidity home. Lock it up. Burn the key.</li>
+            <li>Drain the order book of every last paper hand.</li>
+          </ul>
+          <div class="approval">
+            <div class="approval-row"><span>Approval among Righty voters</span><b>100%</b></div>
+            <div class="meter"><i></i></div>
+          </div>
+          <a class="btn" data-vote="RIGHT" href="#" target="_blank" rel="noopener">I'm voting RIGHT. Post it</a>
+        </article>
+      </div>
+
+      <p class="agree">The one bill both sides passed 100–0: the chart goes up and to the right. Lefty insists it's up and to the left.</p>
+    </div>
+  </section>
+
+  <!-- BUDGET / TOKENOMICS -->
+  <section class="block" id="budget">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">Tokenomics</span>
+        <h2 class="sec-title">The <span class="g">budget</span>.<br>Balanced, for once.</h2>
+        <p class="sec-sub">No pork, no earmarks, no campaign war chest. The whole supply went to the public on day one.</p>
+      </div>
+
+      <div class="budget">
+        <div class="panel">
+          <div class="supply-k">Total supply</div>
+          <div class="supply-v">1,000,000,000 <small>$LOR</small></div>
+          <div class="split-bar" aria-label="Supply: 100% to the public, split between both sides however the market decides">
+            <span class="a">Left</span><span class="b">Right</span>
+          </div>
+          <p class="split-note">How the supply splits between the parties is up to the voters. The line moves every time someone buys.</p>
+          <div class="lines">
+            <div class="line"><span>Fair launch (public)</span><span>100%</span></div>
+            <div class="line"><span>Team / campaign fund</span><span>0%</span></div>
+            <div class="line"><span>Buy tax / sell tax</span><span>0% / 0%</span></div>
+            <div class="line"><span>Liquidity</span><span>Burned</span></div>
+          </div>
+        </div>
+
+        <div class="panel ballot">
+          <div class="ballot-head">
+            <span class="ballot-title">Official ballot</span>
+            <span class="ballot-no">No. 000001</span>
+          </div>
+          <ul class="ballot-list">
+            <li><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20" stroke="#2f62ff" stroke-width="3.2" stroke-linecap="round"/></svg></span><span>Mint authority revoked<small>No new tokens, ever</small></span></li>
+            <li><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20" stroke="#f2333f" stroke-width="3.2" stroke-linecap="round"/></svg></span><span>Freeze authority revoked<small>Nobody can lock your wallet</small></span></li>
+            <li><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20" stroke="#2f62ff" stroke-width="3.2" stroke-linecap="round"/></svg></span><span>Liquidity burned<small>Can't be pulled</small></span></li>
+            <li><span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20" stroke="#f2333f" stroke-width="3.2" stroke-linecap="round"/></svg></span><span>Zero tax<small>Not on buys, not on sells</small></span></li>
+            <li class="no"><span class="box"></span><span>Team allocation<small>Left blank on purpose</small></span></li>
+          </ul>
+          <div class="ballot-sign"><span>Signed: the people</span><span>Verify on-chain</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO VOTE -->
+  <section class="block" id="vote">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">How to buy</span>
+        <h2 class="sec-title">How to <span class="l">vote</span>.<br>Polls are <span class="r">open</span> 24/7.</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="step-n">1</span>
+          <h3>Register</h3>
+          <p>Download <a href="https://phantom.com" target="_blank" rel="noopener">Phantom</a> or any Solana wallet. That's your voter ID.</p>
+        </div>
+        <div class="step">
+          <span class="step-n">2</span>
+          <h3>Fund the campaign</h3>
+          <p>Buy SOL on an exchange or in the wallet, then send it to your wallet address.</p>
+        </div>
+        <div class="step">
+          <span class="step-n">3</span>
+          <h3>Head to the polls</h3>
+          <p>Open <a data-link="buy" href="https://pump.fun" target="_blank" rel="noopener">pump.fun</a> or Jupiter and paste the $LOR contract address. Check the CA. Twice.</p>
+        </div>
+        <div class="step">
+          <span class="step-n">4</span>
+          <h3>Cast your ballot</h3>
+          <p>Swap SOL for $LOR, put your side in your bio, and start the debate in the replies.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section class="block" id="trail">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">Roadmap</span>
+        <h2 class="sec-title">The campaign <span class="g">trail</span>.</h2>
+      </div>
+      <div class="trail">
+        <div class="stop now">
+          <div class="stop-k">Phase 1 · now</div>
+          <h3>The primaries</h3>
+          <ul><li>Fair launch on pump.fun</li><li>CA posted, X and Telegram open</li><li>First 1,000 voters registered</li></ul>
+        </div>
+        <div class="stop">
+          <div class="stop-k">Phase 2</div>
+          <h3>Debate night</h3>
+          <ul><li>Bond curve complete, liquidity burned</li><li>DexScreener profile updated</li><li>Live Left vs Right Spaces on X</li></ul>
+        </div>
+        <div class="stop">
+          <div class="stop-k">Phase 3</div>
+          <h3>Swing states</h3>
+          <ul><li>Meme war: best Lefty vs Righty edits</li><li>Side leaderboard by community vote</li><li>Raids on every timeline that's undecided</li></ul>
+        </div>
+        <div class="stop">
+          <div class="stop-k">Phase 4</div>
+          <h3>Inauguration</h3>
+          <ul><li>The great coin toss ceremony</li><li>Holders vote on the second term</li><li>Recount. Then recount the recount.</li></ul>
+        </div>
+      </div>
+      <p class="trail-foot">These are campaign promises. You know how those go.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block" id="press">
+    <div class="wrap">
+      <div class="sec-head center">
+        <span class="kicker">FAQ</span>
+        <h2 class="sec-title">Press <span class="g">conference</span>.</h2>
+        <p class="sec-sub">We'll take a few questions.</p>
+      </div>
+      <div class="faq">
+        <details open>
+          <summary><span class="who">PRESS</span>So is $LOR left or right?</summary>
+          <div class="ans"><span class="who">$LOR</span><p>Yes. It's both. Every wallet picks a side, and the coin belongs to whoever holds it.</p></div>
+        </details>
+        <details>
+          <summary><span class="who">PRESS</span>Which side is winning?</summary>
+          <div class="ans"><span class="who">$LOR</span><p>The chart. Every buy is a vote, and both parties are counting the same green candles.</p></div>
+        </details>
+        <details>
+          <summary><span class="who">PRESS</span>Is this backed by a real politician or party?</summary>
+          <div class="ans"><span class="who">$LOR</span><p>No. Lefty and Righty are cartoon coins. $LOR has no affiliation with any politician, party, campaign or government.</p></div>
+        </details>
+        <details>
+          <summary><span class="who">PRESS</span>What about centrists?</summary>
+          <div class="ans"><span class="who">$LOR</span><p>Centrists are welcome. Buy one bag for each side and sit in the middle of the aisle like the rest of the swing voters.</p></div>
+        </details>
+        <details>
+          <summary><span class="who">PRESS</span>Is this financial advice?</summary>
+          <div class="ans"><span class="who">$LOR</span><p>No comment. Also, no. $LOR is a meme coin. Only spend what you're fine losing.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CALL -->
+  <section class="final">
+    <div class="wrap">
+      <div class="final-card">
+        <span class="kicker" style="color:#fff">Polls close never</span>
+        <h2 class="final-title">Pick a side.<br>Any side.</h2>
+        <p class="final-sub">Left or right, it's the same coin. Get in before the recount.</p>
+        <div class="ctas" style="justify-content:center;margin-top:0">
+          <a class="btn btn-buy" data-link="buy" href="#vote" target="_blank" rel="noopener">Buy $LOR</a>
+          <a class="btn btn-ghost" data-link="x" href="#" target="_blank" rel="noopener">Join the debate on X</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <a class="brand" href="#top" aria-label="Back to top">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="15.5" fill="url(#rim)"/>
+          <path d="M16 3a13 13 0 0 0 0 26z" fill="#2f62ff"/><path d="M16 3a13 13 0 0 1 0 26z" fill="#f2333f"/>
+          <path d="M13 11l-4 5 4 5M19 11l4 5-4 5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="brand-name">$LOR<small>Left or Right</small></span>
+      </a>
+      <div class="socials">
+        <a class="social" data-link="x" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.3l4.4 5.9zm-1.1 16.2h1.7L7.4 4.7H5.6z"/></svg>X
+        </a>
+        <a class="social" data-link="telegram" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3l-3.2 15.1c-.2 1.1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.2-8.3c.4-.4-.1-.6-.6-.2L6.1 13.1 1.2 11.6c-1-.3-1.1-1 .2-1.5l19.1-7.4c.9-.3 1.7.2 1.4 1.6z"/></svg>Telegram
+        </a>
+        <a class="social" data-link="chart" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>DexScreener
+        </a>
+        <a class="social" data-link="buy" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 10h6"/></svg>pump.fun
+        </a>
+      </div>
+    </div>
+    <p class="disclaimer">$LOR is a meme coin with no intrinsic value or expectation of financial return. It is satire and is not affiliated with, endorsed by, or associated with any politician, political party, campaign or government. Lefty and Righty are fictional characters. Crypto is volatile. Do your own research and never spend more than you can afford to lose.</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ============================================================
+   EDIT ME: drop in your real links and contract address.
+   Leave a value empty ("") and its buttons fall back gracefully.
+   ============================================================ */
+const CONFIG = {
+  ca: "",                         // e.g. "LoR1x...pump"
+  buy: "https://pump.fun",        // your pump.fun coin page once live
+  chart: "https://dexscreener.com/solana",
+  x: "https://x.com",             // your X / Twitter profile
+  telegram: "https://t.me",       // your Telegram group
+};
+
+(function () {
+  // links
+  document.querySelectorAll("[data-link]").forEach(a => {
+    const url = CONFIG[a.dataset.link];
+    if (url) a.href = url;
+  });
+
+  // contract address
+  const caText = CONFIG.ca || "Coming soon";
+  document.querySelectorAll("[data-ca]").forEach(el => { el.textContent = caText; el.title = caText; });
+
+  const toastEl = document.getElementById("toast");
+  let toastTimer;
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove("show"), 1800);
+  }
+
+  document.querySelectorAll("[data-copy]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (!CONFIG.ca) { toast("CA drops at launch. Watch X."); return; }
+      const done = () => toast("Contract address copied");
+      try {
+        navigator.clipboard.writeText(CONFIG.ca).then(done, () => selectCA());
+      } catch (e) { selectCA(); }
+    });
+  });
+  function selectCA() {
+    const el = document.querySelector("[data-ca]");
+    const r = document.createRange(); r.selectNodeContents(el);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    toast("Selected. Press Ctrl/Cmd+C to copy.");
+  }
+
+  // vote buttons -> prefilled post on X
+  document.querySelectorAll("[data-vote]").forEach(a => {
+    const side = a.dataset.vote;
+    const text = side === "LEFT"
+      ? "I'm voting LEFT. Yes we pump. $LOR"
+      : "I'm voting RIGHT. Make candles green again. $LOR";
+    a.href = "https://x.com/intent/post?text=" + encodeURIComponent(text);
+  });
+
+  // breaking-news ticker (satire)
+  const headlines = [
+    ["Left and right agree on something for the first time: number should go up", "just now"],
+    ["Exit polls: 0% of holders plan to exit", "2m ago"],
+    ["Bipartisan bill bans the sell button, passes 100–0", "6m ago"],
+    ["Filibuster enters day 14: senator reads entire order book aloud", "9m ago"],
+    ["Swing voter still undecided, buys both sides", "13m ago"],
+    ["Debate moderator mutes both mics. Chart pumps anyway", "21m ago"],
+    ["Centrists reportedly stuck in the middle of the candle", "34m ago"],
+    ["Recount confirms it: still a coin", "1h ago"],
+  ];
+  const track = document.getElementById("ticker");
+  const html = headlines.map(([h, t]) => `<span class="ticker-item">${h}<span class="tm">${t}</span></span>`).join("");
+  track.innerHTML = html + html.replace(/class="ticker-item"/g, 'class="ticker-item" aria-hidden="true"');
+
+  // the coin toss
+  const coin = document.getElementById("coin");
+  const toss = document.getElementById("toss");
+  const btn = document.getElementById("tossBtn");
+  const verdict = document.getElementById("verdict");
+  let angle = 0, busy = false;
+  const lines = {
+    LEFT: ["The coin has spoken: <b class='l'>LEFT</b>. Lefty is drafting the victory speech.",
+           "<b class='l'>LEFT</b> wins the toss. Righty is demanding a recount.",
+           "Projected winner: <b class='l'>LEFT</b>. Too early to call? Never."],
+    RIGHT: ["The coin has spoken: <b class='r'>RIGHT</b>. Righty is already on stage.",
+            "<b class='r'>RIGHT</b> wins the toss. Lefty is demanding a recount.",
+            "Projected winner: <b class='r'>RIGHT</b>. Concession speech pending."]
+  };
+  function flip() {
+    if (busy) return;
+    busy = true;
+    const side = Math.random() < .5 ? "LEFT" : "RIGHT";
+    coin.classList.remove("idle");
+    // normalise so the landing face is exact
+    const base = Math.ceil(angle / 360) * 360 + 360 * 5;
+    angle = base + (side === "RIGHT" ? 180 : 0);
+    coin.style.transform = `rotateY(${angle}deg)`;
+    toss.classList.remove("flying"); void toss.offsetWidth; toss.classList.add("flying");
+    verdict.textContent = "Counting the votes…";
+    setTimeout(() => {
+      const pool = lines[side];
+      verdict.innerHTML = pool[Math.floor(Math.random() * pool.length)];
+      busy = false;
+    }, 1650);
+  }
+  btn.addEventListener("click", flip);
+  coin.addEventListener("click", flip);
+})();
+</script>
+</body>
+</html>
