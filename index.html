@@ -120,20 +120,17 @@ html[data-side="right"] .sky .gr { transform: scale(1.18); } html[data-side="rig
 .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
 .brand svg { width: 34px; height: 34px; }
 .brand b { font-family: var(--display); font-weight: 800; font-size: 21px; letter-spacing: -.03em; }
-.links { display: flex; gap: 2px; margin-left: 18px; }
-.links a { text-decoration: none; font-size: 14px; color: var(--fg-2); padding: 8px 12px; border-radius: 999px; transition: color .2s, background .2s; }
-.links a:hover { color: var(--fg); background: rgba(255,255,255,.05); }
-.nav-ca {
-  margin-left: auto; display: inline-flex; align-items: center; gap: 10px; min-width: 0;
+.ca-pill {
+  display: inline-flex; align-items: center; gap: 10px; min-width: 0;
   padding: 6px 6px 6px 14px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(255,255,255,.03);
   font-family: var(--mono); font-size: 13px; color: var(--fg-2);
 }
-.nav-ca span:first-child { color: var(--fg-3); font-size: 11px; letter-spacing: .12em; }
-.nav-ca [data-ca] { color: var(--fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 22ch; }
+.ca-pill span:first-child { color: var(--fg-3); font-size: 11px; letter-spacing: .12em; }
+.ca-pill [data-ca] { color: var(--fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 22ch; }
 .icon-btn { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: 0; cursor: pointer; background: rgba(255,255,255,.08); color: var(--fg); transition: background .2s; }
 .icon-btn:hover { background: rgba(255,255,255,.16); }
 .icon-btn svg { width: 15px; height: 15px; }
-.nav .btn { margin-left: 4px; }
+.nav .btn { margin-left: auto; }
 
 /* ---------- hero ---------- */
 .hero { padding-block: clamp(48px, 8vw, 104px) clamp(56px, 7vw, 96px); overflow-x: clip; }
@@ -149,25 +146,8 @@ html[data-side="right"] .hero h1 .tb { opacity: .25; filter: saturate(.3); }
 .lede { margin-top: 26px; font-size: clamp(17px, 1.45vw, 19.5px); color: var(--fg-2); max-width: 33em; line-height: 1.6; }
 .lede b { color: var(--fg); font-weight: 600; }
 
-.picker { margin-top: 30px; display: inline-flex; padding: 5px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(255,255,255,.03); position: relative; max-width: 100%; }
-.picker button {
-  position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px;
-  font: 600 14px/1 var(--body); color: var(--fg-2); background: none; border: 0; cursor: pointer;
-  padding: 11px 18px; border-radius: 999px; transition: color .3s;
-}
-.picker button svg { width: 16px; height: 16px; }
-.picker button[aria-pressed="true"] { color: #fff; }
-.picker .pill { position: absolute; z-index: 0; top: 5px; bottom: 5px; left: 5px; width: 0; border-radius: 999px; background: rgba(255,255,255,.12); transition: left .45s cubic-bezier(.3,1.3,.5,1), width .45s cubic-bezier(.3,1.3,.5,1), background .4s, box-shadow .4s; }
-html[data-side="left"]  .picker .pill { background: linear-gradient(180deg, #5b80ff, var(--blue)); box-shadow: 0 6px 24px -6px var(--blue); }
-html[data-side="right"] .picker .pill { background: linear-gradient(180deg, #ff5a6e, var(--red)); box-shadow: 0 6px 24px -6px var(--red); }
-.picker-note { display: block; margin-top: 12px; font-family: var(--mono); font-size: 12.5px; color: var(--fg-3); min-height: 1.6em; }
+.ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 30px; }
 
-.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
-
-.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
-.chip { display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.025); font-family: var(--mono); font-size: 12.5px; color: var(--fg-2); }
-.chip b { color: var(--fg); font-weight: 600; }
-.chip i { width: 7px; height: 7px; border-radius: 50%; }
 
 /* ---------- coin + orbit ---------- */
 .stage { position: relative; width: 100%; max-width: 580px; aspect-ratio: 1; justify-self: center; display: grid; place-items: center; container-type: inline-size; }
@@ -223,19 +203,6 @@ html[data-side="right"] .picker .pill { background: linear-gradient(180deg, #ff5
 .tk time { font-family: var(--mono); font-size: 12px; color: var(--fg-3); }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
-/* ---------- stats ---------- */
-.stats { padding-block: clamp(32px, 4vw, 48px); }
-.stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-.stat { padding: 24px 24px 22px; display: flex; flex-direction: column; gap: 6px; min-width: 0; position: relative; overflow: hidden; text-decoration: none; transition: border-color .25s; }
-a.stat:hover { border-color: var(--line-2); }
-.stat-k { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11.5px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--fg-3); }
-.stat-k svg { width: 15px; height: 15px; }
-.stat-v { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 800; font-size: clamp(34px, 3.4vw, 48px); letter-spacing: -.04em; line-height: 1; margin-top: 8px; font-variant-numeric: tabular-nums; }
-.stat-v svg { width: 26px; height: 26px; color: var(--fg-3); }
-.stat-s { font-size: 13.5px; color: var(--fg-3); }
-.stat.b .stat-k { color: var(--blue-hi); } .stat.r .stat-k { color: var(--red-hi); }
-.stat::after { content: ""; position: absolute; right: -40px; top: -40px; width: 120px; height: 120px; border-radius: 50%; filter: blur(30px); opacity: .35; pointer-events: none; }
-.stat.b::after { background: var(--blue); } .stat.r::after { background: var(--red); }
 
 /* ---------- sections ---------- */
 .section { padding-block: clamp(56px, 7vw, 100px); }
@@ -383,7 +350,7 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 /* ---------- live count ---------- */
-.mini { margin-top: 18px; display: grid; gap: 8px; max-width: 420px; text-decoration: none; }
+.mini { margin-top: 30px; display: grid; gap: 8px; max-width: 420px; text-decoration: none; }
 .mini-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-family: var(--mono); font-size: 12px; color: var(--fg-3); }
 .mini-row b { color: var(--fg); font-weight: 600; font-variant-numeric: tabular-nums; }
 .mini-row .l b { color: var(--blue-hi); } .mini-row .r b { color: var(--red-hi); }
@@ -466,8 +433,6 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 1080px) {
-  .links { display: none; }
-  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .steps, .road { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tok { grid-template-columns: minmax(0, 1fr); }
 }
@@ -476,8 +441,6 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
   .stage { max-width: 480px; }
   .teams { grid-template-columns: minmax(0, 1fr); }
   .vs { position: relative; left: auto; top: auto; transform: none; margin: -32px auto; }
-  .nav-ca { display: none; }
-  .nav .btn { margin-left: auto; }
 }
 @media (max-width: 680px) {
   .board-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
@@ -493,9 +456,6 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
   .tok-main > div:last-child { width: 100%; }
   .checks { grid-template-columns: minmax(0, 1fr); }
   .steps, .road { grid-template-columns: minmax(0, 1fr); }
-  .stat { padding: 20px 18px; }
-  .stat-v { font-size: 30px; }
-  .picker button { padding: 10px 12px; font-size: 13.5px; }
   .team.right .team-top { flex-direction: row; text-align: left; }
   .orb { width: 68px; height: 68px; }
   .tk { padding: 15px 22px; font-size: 14px; }
@@ -585,17 +545,6 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="$LOR home"><svg viewBox="0 0 400 412" aria-hidden="true"><use href="#coin"/></svg><b>$LOR</b></a>
-    <nav class="links" aria-label="Sections">
-      <a href="#sides">Pick a side</a>
-      <a href="#tokenomics">Tokenomics</a>
-      <a href="#buy">How to buy</a>
-      <a href="#roadmap">Roadmap</a>
-      <a href="#faq">FAQ</a>
-    </nav>
-    <div class="nav-ca" role="group" aria-label="Contract address">
-      <span>CA</span><span data-ca>Coming soon</span>
-      <button class="icon-btn" type="button" data-copy aria-label="Copy contract address"><svg><use href="#i-copy"/></svg></button>
-    </div>
     <a class="btn btn-primary btn-sm" data-link="buy" href="#buy" target="_blank" rel="noopener">Buy $LOR <svg><use href="#i-ext"/></svg></a>
   </div>
 </header>
@@ -611,30 +560,19 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
         </h1>
         <p class="lede"><b>$LOR</b> is the meme coin for both sides of the aisle. Every buy is a vote. Pick your side, hold the line, and let the chart settle the debate.</p>
 
-        <div class="picker" role="group" aria-label="Pick your side">
-          <span class="pill" aria-hidden="true"></span>
-          <button type="button" data-side="left" aria-pressed="false"><svg><use href="#i-left"/></svg>Left</button>
-          <button type="button" data-side="both" aria-pressed="true">Undecided</button>
-          <button type="button" data-side="right" aria-pressed="false">Right<svg><use href="#i-right"/></svg></button>
-        </div>
-        <span class="picker-note" id="pickerNote" aria-live="polite">Pick a side. It counts as your vote.</span>
-
-        <a class="mini" href="#count" data-live="wait" aria-label="Live vote count">
-          <span class="mini-row"><span class="l"><b data-pct="left">–</b> Left</span><span class="dot-live">LIVE</span><span class="r">Right <b data-pct="right">–</b></span></span>
-          <span class="mini-bar"><i class="ml" style="width:50%"></i><i class="mr"></i></span>
-        </a>
 
         <div class="ctas">
           <a class="btn btn-primary" data-link="buy" href="#buy" target="_blank" rel="noopener">Buy $LOR <svg><use href="#i-right"/></svg></a>
-          <a class="btn btn-glass" href="#sides">Meet both parties</a>
+          <div class="ca-pill" role="group" aria-label="Contract address">
+            <span>CA</span><span data-ca>Coming soon</span>
+            <button class="icon-btn" type="button" data-copy aria-label="Copy contract address"><svg><use href="#i-copy"/></svg></button>
+          </div>
         </div>
 
-        <div class="chips">
-          <span class="chip"><i style="background:var(--blue)"></i><b>1B</b> supply</span>
-          <span class="chip"><i style="background:#fff"></i><b>0%</b> tax</span>
-          <span class="chip"><i style="background:var(--red)"></i>LP <b>burned</b></span>
-          <span class="chip"><i style="background:linear-gradient(90deg,var(--blue),var(--red))"></i><b>0%</b> to team</span>
-        </div>
+        <a class="mini" href="#count" data-live="wait" aria-label="Live vote count. Jump to the vote">
+          <span class="mini-row"><span class="l"><b data-pct="left">–</b> Left</span><span class="dot-live">LIVE VOTE</span><span class="r">Right <b data-pct="right">–</b></span></span>
+          <span class="mini-bar"><i class="ml" style="width:50%"></i><i class="mr"></i></span>
+        </a>
       </div>
 
       <div class="stage">
@@ -716,31 +654,6 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
     </div>
   </section>
 
-  <div class="stats">
-    <div class="wrap stats-grid">
-      <div class="stat glass b">
-        <div class="stat-k"><svg><use href="#i-coins"/></svg>Total supply</div>
-        <div class="stat-v">1B</div>
-        <div class="stat-s">1,000,000,000 $LOR, fixed</div>
-      </div>
-      <div class="stat glass">
-        <div class="stat-k"><svg><use href="#i-scale"/></svg>Buy / sell tax</div>
-        <div class="stat-v">0 / 0</div>
-        <div class="stat-s">No tax, from either side</div>
-      </div>
-      <div class="stat glass r">
-        <div class="stat-k"><svg><use href="#i-flame"/></svg>Liquidity</div>
-        <div class="stat-v">Burned</div>
-        <div class="stat-s">Can't be pulled by anyone</div>
-      </div>
-      <a class="stat glass" data-link="chart" href="#" target="_blank" rel="noopener">
-        <div class="stat-k"><svg><use href="#i-chart"/></svg>Live chart</div>
-        <div class="stat-v">Polls <svg><use href="#i-ext"/></svg></div>
-        <div class="stat-s">Market cap and holders on DexScreener</div>
-      </a>
-    </div>
-  </div>
-
   <!-- SIDES -->
   <section class="section" id="sides">
     <div class="wrap">
@@ -765,10 +678,6 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
             <li><svg><use href="#i-check"/></svg>Universal basic bags for every wallet that holds the line.</li>
             <li><svg><use href="#i-check"/></svg>Tax the sellers. In spirit only. The contract says 0%.</li>
           </ul>
-          <div class="team-foot">
-            <a class="btn btn-team" data-vote="left" href="#" target="_blank" rel="noopener"><svg><use href="#i-left"/></svg>Join Team Left</a>
-            <span class="team-note">Posts your vote on X</span>
-          </div>
         </article>
 
         <div class="vs" aria-hidden="true">VS</div>
@@ -787,10 +696,6 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
             <li><svg><use href="#i-check"/></svg>Bring the liquidity home. Then burn the key.</li>
             <li><svg><use href="#i-check"/></svg>Drain the order book of every last paper hand.</li>
           </ul>
-          <div class="team-foot">
-            <a class="btn btn-team" data-vote="right" href="#" target="_blank" rel="noopener">Join Team Right<svg><use href="#i-right"/></svg></a>
-            <span class="team-note">Posts your vote on X</span>
-          </div>
         </article>
       </div>
 
@@ -916,9 +821,7 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
       </div>
       <div class="faq">
         <details class="glass" open><summary>So is $LOR left or right?<span class="pm"><svg><use href="#i-plus"/></svg></span></summary><p class="ans">Yes. Every wallet picks a side, and the coin belongs to whoever holds it.</p></details>
-        <details class="glass"><summary>Which side is winning?<span class="pm"><svg><use href="#i-plus"/></svg></span></summary><p class="ans">The chart. Every buy is a vote, and both parties are counting the same green candles.</p></details>
         <details class="glass"><summary>Is this backed by a real politician or party?<span class="pm"><svg><use href="#i-plus"/></svg></span></summary><p class="ans">No. $LOR is satire and has no affiliation with any politician, party, campaign or government.</p></details>
-        <details class="glass"><summary>What about centrists?<span class="pm"><svg><use href="#i-plus"/></svg></span></summary><p class="ans">Welcome. Hit "Undecided" up top, buy a bag, and sit in the middle of the aisle with the rest of the swing voters.</p></details>
         <details class="glass"><summary>Is this financial advice?<span class="pm"><svg><use href="#i-plus"/></svg></span></summary><p class="ans">No comment. Also, no. $LOR is a meme coin. Only spend what you're fine losing.</p></details>
       </div>
     </div>
@@ -932,7 +835,6 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
         <p>Left or right, it's the same coin. Get in before the recount.</p>
         <div class="ctas" style="justify-content:center;margin-top:4px">
           <a class="btn btn-primary" data-link="buy" href="#buy" target="_blank" rel="noopener">Buy $LOR <svg><use href="#i-right"/></svg></a>
-          <a class="btn btn-glass" data-link="x" href="#" target="_blank" rel="noopener">Join the debate on X</a>
         </div>
       </div>
     </div>
@@ -947,7 +849,6 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
         <a class="social" data-link="x" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.3l4.4 5.9zm-1.1 16.2h1.7L7.4 4.7H5.6z"/></svg>X</a>
         <a class="social" data-link="telegram" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3l-3.2 15.1c-.2 1.1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.2-8.3c.4-.4-.1-.6-.6-.2L6.1 13.1 1.2 11.6c-1-.3-1.1-1 .2-1.5l19.1-7.4c.9-.3 1.7.2 1.4 1.6z"/></svg>Telegram</a>
         <a class="social" data-link="chart" href="#" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-chart"/></svg>DexScreener</a>
-        <a class="social" data-link="buy" href="#" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-coins"/></svg>pump.fun</a>
       </div>
     </div>
     <p class="disclaimer">$LOR is a meme coin with no intrinsic value or expectation of financial return. It is satire and is not affiliated with, endorsed by, or associated with any politician, political party, campaign or government. Crypto is volatile. Do your own research and never spend more than you can afford to lose.</p>
@@ -992,41 +893,14 @@ const CONFIG = {
   }));
 
   // ---------- your side (theme + vote) ----------
-  const picker = document.querySelector(".picker");
-  const pill = picker.querySelector(".pill");
-  const note = document.getElementById("pickerNote");
-  const notes = {
-    both: "Pick a side. It counts as your vote.",
-    left: "Welcome to Team Left. Yes we pump.",
-    right: "Welcome to Team Right. Make candles green again."
-  };
   const readLS = k => { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } };
   const writeLS = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
-
-  function movePill() {
-    const on = picker.querySelector('[aria-pressed="true"]');
-    pill.style.left = on.offsetLeft + "px"; pill.style.width = on.offsetWidth + "px";
-  }
   function setSide(side, opts) {
     root.dataset.side = side;
-    picker.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.side === side)));
     document.querySelectorAll("[data-pick]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.pick === side)));
-    movePill();
-    note.textContent = notes[side];
     if (opts && opts.vote) queueVote(side);
   }
-  picker.querySelectorAll("button").forEach(b => b.addEventListener("click", () => setSide(b.dataset.side, { vote: true })));
   document.querySelectorAll("[data-pick]").forEach(b => b.addEventListener("click", () => setSide(b.dataset.pick, { vote: true })));
-  addEventListener("resize", movePill);
-  if (document.fonts) document.fonts.ready.then(movePill);
-
-  // team buttons: vote and open a prefilled post on X
-  document.querySelectorAll("[data-vote]").forEach(a => {
-    const side = a.dataset.vote;
-    const text = side === "left" ? "I'm on Team Left. Yes we pump. $LOR" : "I'm on Team Right. Make candles green again. $LOR";
-    a.href = "https://x.com/intent/post?text=" + encodeURIComponent(text);
-    a.addEventListener("click", () => setSide(side, { vote: true }));
-  });
 
   // ---------- live count ----------
   // Two backends: the claude.ai preview keeps votes in the artifact's shared db;
@@ -1102,10 +976,8 @@ const CONFIG = {
 
     const c = live.committed;
     yourVote.innerHTML = c
-      ? `Your vote: <b>${c === "left" ? "LEFT" : "RIGHT"}</b><br><button type="button" id="withdraw">Go undecided</button>`
+      ? `Your vote: <b>${c === "left" ? "LEFT" : "RIGHT"}</b><br>Tap the other side to switch.`
       : live.mode ? "You haven't voted yet.<br>Pick a side to count." : "Pick a side to count.";
-    const wd = document.getElementById("withdraw");
-    if (wd) wd.addEventListener("click", () => setSide("both", { vote: true }));
     renderSync();
   }
   function renderSync() {
