@@ -11,7 +11,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ecf8'/%3E%3Cpath d='M16 3a13 13 0 0 0 0 26z' fill='%233a66ff'/%3E%3Cpath d='M16 3a13 13 0 0 1 0 26z' fill='%23ff3049'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&display=swap">
 </head>
 <body>
 <style>
@@ -195,11 +195,19 @@ html[data-side="right"] .hero h1 .tb { opacity: .25; filter: saturate(.3); }
 .coin { width: 100%; height: 100%; cursor: pointer; transition: transform 1.2s cubic-bezier(.2,.8,.2,1); border: 0; padding: 0; background: none; display: block; border-radius: 50%; }
 .coin svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 40px 50px rgba(0,0,0,.6)); }
 .coin.spin { transform: rotateY(720deg); }
-.hero-char { position: absolute; bottom: 0; z-index: 4; width: 30%; height: auto; transform-origin: 50% 100%; animation: sway 5s ease-in-out infinite; filter: drop-shadow(0 16px 24px rgba(0,0,0,.5)); }
-.hero-char.l { left: -3%; }
-.hero-char.r { right: -3%; animation-delay: -2.5s; }
+.hero-char { position: absolute; bottom: 0; z-index: 4; width: 35%; height: auto; transform-origin: 50% 100%; animation: sway 5s ease-in-out infinite; filter: drop-shadow(0 16px 24px rgba(0,0,0,.5)); }
+.hero-char.l { left: -6%; }
+.hero-char.r { right: -6%; animation-delay: -2.5s; }
 @keyframes sway { 0%, 100% { rotate: -2deg; } 50% { rotate: 2deg; } }
 .team-char { width: 92px; flex-shrink: 0; }
+.bubble { position: absolute; z-index: 5; bottom: 43%; font-family: "Lilita One", var(--display); font-size: clamp(13px, 1.45vw, 19px); letter-spacing: .03em; text-transform: uppercase; line-height: 1;
+  color: #1b1a1f; background: #fdf6e3; border: 3px solid #1b1a1f; border-radius: 16px; padding: 9px 14px 8px; box-shadow: 4px 5px 0 #1b1a1f; white-space: nowrap; animation: talk 4s ease-in-out infinite; }
+.bubble::after { content: ""; position: absolute; bottom: -10px; width: 14px; height: 14px; background: #fdf6e3; border-right: 3px solid #1b1a1f; border-bottom: 3px solid #1b1a1f; }
+.bubble.l { left: 6%; rotate: -5deg; }
+.bubble.l::after { left: 18px; transform: rotate(45deg) skew(12deg, 12deg); }
+.bubble.r { right: 6%; rotate: 5deg; animation-delay: -2s; }
+.bubble.r::after { right: 18px; transform: rotate(45deg) skew(12deg, 12deg); }
+@keyframes talk { 0%, 100% { translate: 0 0; } 50% { translate: 0 -5px; } }
 .coin-cap { position: absolute; left: 50%; bottom: -7%; transform: translateX(-50%); font-family: var(--mono); font-size: 12.5px; color: var(--fg-3); white-space: nowrap; }
 .coin-cap b { color: var(--fg); font-weight: 600; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -480,7 +488,7 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .halo, .orbit, .sat > span, .coin-wrap, .sparkle, .track, .hero-char, .hop, .tug-l::after, .tug-r::after, .dot-live::before { animation: none !important; }
+  .halo, .orbit, .sat > span, .coin-wrap, .sparkle, .track, .hero-char, .hop, .bubble, .tug-l::after, .tug-r::after, .dot-live::before { animation: none !important; }
   .tug-l, .knob, .mini-bar i { transition: none; }
   .ticker { overflow-x: auto; }
   .coin { transition: none; }
@@ -522,52 +530,89 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
     <symbol id="i-chart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M7 15l4-4 3 3 6-7"/></symbol>
     <symbol id="i-scale" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v17M7 21h10M4 7h16M6 7l-3 7a3.2 3.2 0 0 0 6 0zM18 7l-3 7a3.2 3.2 0 0 0 6 0z"/></g></symbol>
 
-    <!-- Lenny: Team Left. Flat cutout style, looks toward the center. -->
-    <symbol id="char-l" viewBox="0 0 200 250">
-      <ellipse cx="100" cy="241" rx="64" ry="7" fill="#000" opacity=".35"/>
-      <ellipse cx="72" cy="231" rx="25" ry="9" fill="#14161f"/>
-      <ellipse cx="128" cy="231" rx="25" ry="9" fill="#14161f"/>
-      <path d="M60 196 h80 v32 h-80z" fill="#262b40"/>
-      <path d="M100 204 v24" stroke="#14161f" stroke-width="2.5"/>
-      <path d="M44 214 C42 174 60 148 100 148 C140 148 158 174 156 214 Z" fill="#3a66ff" stroke="#14161f" stroke-width="3" stroke-linejoin="round"/>
-      <path d="M100 152 V213" stroke="#1d3bc0" stroke-width="3"/>
-      <path d="M72 153 Q100 174 128 153" fill="none" stroke="#1d3bc0" stroke-width="6" stroke-linecap="round"/>
-      <circle cx="124" cy="184" r="9.5" fill="#fff" stroke="#14161f" stroke-width="2"/>
-      <text x="124" y="188.5" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="12" font-weight="900" fill="#3a66ff">L</text>
-      <circle cx="45" cy="203" r="13" fill="#1d3bc0" stroke="#14161f" stroke-width="3"/>
-      <circle cx="155" cy="203" r="13" fill="#1d3bc0" stroke="#14161f" stroke-width="3"/>
-      <ellipse cx="100" cy="92" rx="75" ry="66" fill="#f6d2b0" stroke="#14161f" stroke-width="3"/>
-      <path d="M26 88 C22 40 58 21 100 21 C142 21 179 40 174 88 C170 72 162 64 152 60 L148 71 L138 58 L130 69 L120 56 L110 67 L100 54 L90 67 L80 56 L71 69 L62 60 C46 64 32 74 26 88 Z" fill="#17181f" stroke="#14161f" stroke-width="3" stroke-linejoin="round"/>
-      <ellipse cx="84" cy="97" rx="17" ry="20" fill="#fff" stroke="#14161f" stroke-width="3"/>
-      <ellipse cx="116" cy="97" rx="17" ry="20" fill="#fff" stroke="#14161f" stroke-width="3"/>
-      <circle cx="90" cy="99" r="4.2" fill="#14161f"/><circle cx="122" cy="99" r="4.2" fill="#14161f"/>
-      <path d="M84 132 Q102 143 121 127" fill="none" stroke="#14161f" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- Lenny: Team Left. Thick-outline cartoon style, fists up, looking right. -->
+    <symbol id="char-l" viewBox="0 0 240 300">
+      <g stroke="#1b1a1f" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="120" cy="288" rx="76" ry="9" fill="#000" opacity=".28" stroke="none"/>
+        <rect x="92" y="250" width="56" height="26" fill="#34354a"/>
+        <ellipse cx="94" cy="278" rx="28" ry="13" fill="#2b2523"/>
+        <ellipse cx="148" cy="278" rx="28" ry="13" fill="#2b2523"/>
+        <path d="M72 186 C62 206 56 238 58 258 Q60 266 70 266 L172 266 Q182 266 184 258 C186 238 180 206 170 186 Q121 172 72 186 Z" fill="#2f6ae0"/>
+        <path d="M121 190 V264" fill="none" stroke-width="3"/>
+        <circle cx="134" cy="208" r="5" fill="#2f6ae0" stroke-width="3"/>
+        <circle cx="134" cy="228" r="5" fill="#2f6ae0" stroke-width="3"/>
+        <circle cx="134" cy="248" r="5" fill="#2f6ae0" stroke-width="3"/>
+        <path d="M80 238 l17 -2 M150 236 l17 3" fill="none" stroke-width="3"/>
+        <circle cx="46" cy="134" r="14" fill="#f8c3a4"/>
+        <circle cx="196" cy="134" r="14" fill="#f8c3a4"/>
+        <path d="M106 50 L100 20 L117 36 L126 14 L136 48 Z" fill="#26252e"/>
+        <ellipse cx="121" cy="128" rx="78" ry="72" fill="#f8c3a4"/>
+        <path d="M44 118 C38 62 78 40 122 40 C168 40 206 62 200 118 L192 104 L184 114 L175 100 L166 112 L157 98 L148 110 L139 96 L130 108 L121 94 L112 108 L103 96 L94 110 L85 98 L76 112 L67 100 L58 114 L50 104 Z" fill="#26252e"/>
+        <path d="M74 68 Q102 50 138 52" fill="none" stroke="#6f7896" stroke-width="9" opacity=".7"/>
+        <path d="M154 56 Q168 60 178 72" fill="none" stroke="#6f7896" stroke-width="6" opacity=".7"/>
+        <ellipse cx="100" cy="142" rx="18" ry="20" fill="#fdf6e3"/>
+        <ellipse cx="142" cy="142" rx="18" ry="20" fill="#fdf6e3"/>
+        <circle cx="107" cy="145" r="5.5" fill="#1b1a1f" stroke="none"/>
+        <circle cx="149" cy="145" r="5.5" fill="#1b1a1f" stroke="none"/>
+        <circle cx="100" cy="142" r="24" fill="none" stroke-width="4.5"/>
+        <circle cx="142" cy="142" r="24" fill="none" stroke-width="4.5"/>
+        <path d="M76 140 L48 136 M166 140 L194 136" fill="none" stroke-width="4"/>
+        <path d="M86 128 q6 -6 14 -6 M128 128 q6 -6 14 -6" fill="none" stroke="#fff" stroke-width="3" opacity=".85"/>
+        <path d="M80 114 L114 127 M128 127 L162 114" fill="none" stroke-width="9"/>
+        <path d="M66 112 l5 -6 l2 7 l5 -6" fill="none" stroke="#d8344a" stroke-width="3"/>
+        <path d="M168 108 l5 -6 l2 7 l5 -6" fill="none" stroke="#d8344a" stroke-width="3"/>
+        <path d="M94 172 Q121 184 148 170 Q146 197 121 198 Q96 197 94 172 Z" fill="#7a2b2b"/>
+        <path d="M95 173 Q121 185 147 171 L145 180 Q121 191 97 182 Z" fill="#fdf6e3" stroke-width="3"/>
+        <path d="M108 178 v8 M121 180 v8 M134 177 v8" fill="none" stroke-width="2"/>
+        <path d="M108 193 Q121 185 134 193 Q121 198 108 193 Z" fill="#f2899b" stroke-width="3"/>
+        <path d="M80 210 C64 204 48 196 40 182" fill="none" stroke-width="27"/>
+        <path d="M80 210 C64 204 48 196 40 182" fill="none" stroke="#2f6ae0" stroke-width="17"/>
+        <circle cx="38" cy="174" r="17" fill="#1d4fc0"/>
+        <path d="M30 168 h12 M30 176 h12" fill="none" stroke-width="2.5"/>
+        <path d="M162 210 C178 204 194 196 202 182" fill="none" stroke-width="27"/>
+        <path d="M162 210 C178 204 194 196 202 182" fill="none" stroke="#2f6ae0" stroke-width="17"/>
+        <circle cx="204" cy="174" r="17" fill="#1d4fc0"/>
+        <path d="M198 168 h12 M198 176 h12" fill="none" stroke-width="2.5"/>
+      </g>
     </symbol>
-    <!-- Riley: Team Right. Short blonde bob. -->
-    <symbol id="char-r" viewBox="0 0 200 250">
-      <ellipse cx="100" cy="241" rx="64" ry="7" fill="#000" opacity=".35"/>
-      <ellipse cx="72" cy="231" rx="24" ry="9" fill="#14161f"/>
-      <ellipse cx="128" cy="231" rx="24" ry="9" fill="#14161f"/>
-      <path d="M62 196 h76 v32 h-76z" fill="#262b40"/>
-      <path d="M100 204 v24" stroke="#14161f" stroke-width="2.5"/>
-      <path d="M44 214 C42 174 60 148 100 148 C140 148 158 174 156 214 Z" fill="#ff3049" stroke="#14161f" stroke-width="3" stroke-linejoin="round"/>
-      <path d="M100 152 V213" stroke="#b8142a" stroke-width="3"/>
-      <path d="M72 153 Q100 174 128 153" fill="none" stroke="#b8142a" stroke-width="6" stroke-linecap="round"/>
-      <circle cx="76" cy="184" r="9.5" fill="#fff" stroke="#14161f" stroke-width="2"/>
-      <text x="76" y="188.5" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="12" font-weight="900" fill="#ff3049">R</text>
-      <circle cx="45" cy="203" r="13" fill="#b8142a" stroke="#14161f" stroke-width="3"/>
-      <circle cx="155" cy="203" r="13" fill="#b8142a" stroke="#14161f" stroke-width="3"/>
-      <path d="M14 140 C4 64 40 16 100 16 C160 16 196 64 186 140 C182 152 164 154 156 144 L44 144 C36 154 18 152 14 140 Z" fill="#f7cf4a" stroke="#14161f" stroke-width="3" stroke-linejoin="round"/>
-      <ellipse cx="100" cy="92" rx="73" ry="66" fill="#f6d2b0" stroke="#14161f" stroke-width="3"/>
-      <path d="M27 92 C24 42 60 22 100 22 C140 22 176 42 173 92 C166 76 154 66 140 64 C130 72 116 72 108 62 C98 72 82 72 72 62 C56 62 36 74 27 92 Z" fill="#f7cf4a" stroke="#14161f" stroke-width="3" stroke-linejoin="round"/>
-      <path d="M100 24 C96 40 92 52 88 64 M130 30 C130 44 128 54 124 66" fill="none" stroke="#d9a520" stroke-width="2.5" stroke-linecap="round"/>
-      <rect x="140" y="50" width="20" height="8" rx="4" fill="#ff3049" stroke="#14161f" stroke-width="2" transform="rotate(-24 150 54)"/>
-      <ellipse cx="84" cy="98" rx="17" ry="20" fill="#fff" stroke="#14161f" stroke-width="3"/>
-      <ellipse cx="116" cy="98" rx="17" ry="20" fill="#fff" stroke="#14161f" stroke-width="3"/>
-      <circle cx="78" cy="100" r="4.2" fill="#14161f"/><circle cx="110" cy="100" r="4.2" fill="#14161f"/>
-      <path d="M68 84 l-8 -5 M71 79 l-6 -7 M132 84 l8 -5 M129 79 l6 -7" stroke="#14161f" stroke-width="2.6" stroke-linecap="round"/>
-      <circle cx="62" cy="122" r="7" fill="#ff8a98" opacity=".55"/><circle cx="138" cy="122" r="7" fill="#ff8a98" opacity=".55"/>
-      <path d="M86 128 Q100 142 114 128 Q100 134 86 128 Z" fill="#7a1020" stroke="#14161f" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Riley: Team Right. Long blonde hair, scalloped fringe, points at Lenny. -->
+    <symbol id="char-r" viewBox="0 0 240 300">
+      <g stroke="#1b1a1f" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="120" cy="288" rx="76" ry="9" fill="#000" opacity=".28" stroke="none"/>
+        <rect x="92" y="250" width="56" height="26" fill="#34354a"/>
+        <ellipse cx="94" cy="278" rx="28" ry="13" fill="#2b2523"/>
+        <ellipse cx="148" cy="278" rx="28" ry="13" fill="#2b2523"/>
+        <path d="M40 120 C36 56 78 22 122 22 C168 22 208 56 204 120 L208 206 Q209 220 194 219 L48 219 Q32 220 34 206 Z" fill="#f2c35e"/>
+        <path d="M74 186 C64 206 58 238 60 258 Q62 266 72 266 L170 266 Q180 266 182 258 C184 238 178 206 168 186 Q121 172 74 186 Z" fill="#e23a2e"/>
+        <path d="M121 190 V264" fill="none" stroke-width="3"/>
+        <circle cx="132" cy="210" r="5" fill="#e23a2e" stroke-width="3"/>
+        <circle cx="132" cy="230" r="5" fill="#e23a2e" stroke-width="3"/>
+        <circle cx="132" cy="250" r="5" fill="#e23a2e" stroke-width="3"/>
+        <path d="M82 240 l17 -2 M146 238 l17 3" fill="none" stroke-width="3"/>
+        <ellipse cx="121" cy="124" rx="76" ry="70" fill="#f8c3a4"/>
+        <path d="M42 100 C36 146 38 190 46 218 L76 218 C70 184 66 140 70 104 Z" fill="#f2c35e"/>
+        <path d="M200 100 C206 146 204 190 196 218 L166 218 C172 184 176 140 172 104 Z" fill="#f2c35e"/>
+        <path d="M42 108 C36 52 76 22 121 22 C166 22 206 52 200 108 C192 100 184 110 175 102 C166 110 157 100 148 108 C139 100 130 110 121 102 C112 110 103 100 94 108 C85 100 76 110 67 102 C58 110 50 100 42 108 Z" fill="#f2c35e"/>
+        <path d="M96 30 C90 52 86 74 86 98 M130 26 C130 50 128 76 126 100 M162 38 C166 58 168 80 166 100 M56 134 C52 162 54 188 60 212 M186 134 C190 162 188 188 182 212" fill="none" stroke-width="2.5"/>
+        <path d="M160 204 C182 196 198 180 204 160" fill="none" stroke-width="27"/>
+        <path d="M160 204 C182 196 198 180 204 160" fill="none" stroke="#e23a2e" stroke-width="17"/>
+        <circle cx="206" cy="150" r="16" fill="#b81f22"/>
+        <path d="M84 210 C66 214 46 214 30 210" fill="none" stroke-width="27"/>
+        <path d="M84 210 C66 214 46 214 30 210" fill="none" stroke="#e23a2e" stroke-width="17"/>
+        <circle cx="22" cy="209" r="15" fill="#b81f22"/>
+        <path d="M14 205 l-10 -2" fill="none" stroke-width="5"/>
+        <ellipse cx="101" cy="134" rx="19" ry="21" fill="#fdf6e3"/>
+        <ellipse cx="141" cy="134" rx="19" ry="21" fill="#fdf6e3"/>
+        <circle cx="94" cy="138" r="5.5" fill="#1b1a1f" stroke="none"/>
+        <circle cx="134" cy="138" r="5.5" fill="#1b1a1f" stroke="none"/>
+        <path d="M80 108 L115 120 M127 120 L162 108" fill="none" stroke-width="9"/>
+        <path d="M66 122 l5 -6 l2 7 l5 -6" fill="none" stroke="#d8344a" stroke-width="3"/>
+        <path d="M166 118 l5 -6 l2 7 l5 -6" fill="none" stroke="#d8344a" stroke-width="3"/>
+        <path d="M92 162 Q121 174 150 160 Q148 190 121 191 Q94 190 92 162 Z" fill="#7a2b2b"/>
+        <path d="M93 163 Q121 175 149 161 L147 170 Q121 181 95 172 Z" fill="#fdf6e3" stroke-width="3"/>
+        <path d="M107 168 v8 M121 170 v8 M135 167 v8" fill="none" stroke-width="2"/>
+        <path d="M107 186 Q121 177 135 186 Q121 191 107 186 Z" fill="#f2899b" stroke-width="3"/>
+      </g>
     </symbol>
     <symbol id="coin" viewBox="0 0 400 412">
       <circle cx="200" cy="211" r="198" fill="url(#platEdge)"/>
@@ -661,8 +706,10 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
           </button>
           <svg class="sparkle" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 0c.6 6.4 5.6 11.4 12 12-6.4.6-11.4 5.6-12 12-.6-6.4-5.6-11.4-12-12C6.4 11.4 11.4 6.4 12 0z"/></svg>
         </div>
-        <svg class="hero-char l" viewBox="0 0 200 250" role="img" aria-label="Lenny, Team Left"><use href="#char-l"/></svg>
-        <svg class="hero-char r" viewBox="0 0 200 250" role="img" aria-label="Riley, Team Right"><use href="#char-r"/></svg>
+        <span class="bubble l" aria-hidden="true">Oh really?</span>
+        <span class="bubble r" aria-hidden="true">Source?</span>
+        <svg class="hero-char l" viewBox="0 0 240 300" role="img" aria-label="Lenny, Team Left"><use href="#char-l"/></svg>
+        <svg class="hero-char r" viewBox="0 0 240 300" role="img" aria-label="Riley, Team Right"><use href="#char-r"/></svg>
       </div>
     </div>
   </section>
@@ -683,7 +730,7 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
       <div class="board glass" data-live="wait">
         <div class="board-top">
           <button class="side l" type="button" data-pick="left" aria-pressed="false">
-            <svg class="side-char" viewBox="0 0 200 250" aria-hidden="true"><use href="#char-l"/></svg>
+            <svg class="side-char" viewBox="0 0 240 300" aria-hidden="true"><use href="#char-l"/></svg>
             <span class="tally l">
               <span class="tally-k">Team Left</span>
               <span class="tally-n" data-count="left">–</span>
@@ -693,7 +740,7 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
           </button>
           <span class="live-pill"><span class="dot-live">LIVE</span><span><b data-count="total">–</b> votes</span></span>
           <button class="side r" type="button" data-pick="right" aria-pressed="false">
-            <svg class="side-char" viewBox="0 0 200 250" aria-hidden="true"><use href="#char-r"/></svg>
+            <svg class="side-char" viewBox="0 0 240 300" aria-hidden="true"><use href="#char-r"/></svg>
             <span class="tally r">
               <span class="tally-k">Team Right</span>
               <span class="tally-n" data-count="right">–</span>
@@ -731,7 +778,7 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
       <div class="teams">
         <article class="team left">
           <div class="team-top">
-            <svg class="team-char" viewBox="0 0 200 250" aria-hidden="true"><use href="#char-l"/></svg>
+            <svg class="team-char" viewBox="0 0 240 300" aria-hidden="true"><use href="#char-l"/></svg>
             <div>
               <div class="team-k">Lenny · left side of the chart</div>
               <h3>Team Left</h3>
@@ -749,7 +796,7 @@ footer { border-top: 1px solid var(--line); padding-block: 44px 56px; }
 
         <article class="team right">
           <div class="team-top">
-            <svg class="team-char" viewBox="0 0 200 250" aria-hidden="true"><use href="#char-r"/></svg>
+            <svg class="team-char" viewBox="0 0 240 300" aria-hidden="true"><use href="#char-r"/></svg>
             <div>
               <div class="team-k">Riley · right side of the chart</div>
               <h3>Team Right</h3>
