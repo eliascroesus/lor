@@ -2,7 +2,7 @@
 
 Landing page for the $LOR meme coin: `index.html` plus three scripts in `js/`.
 
-- `js/rig.js`, `js/idle.js` and `js/fx.js` (the hand-cut red/blue split) are copied from [eliascroesus/leftright](https://github.com/eliascroesus/leftright), with one change: here Lenny (blue, the guy) is Team Left and Riley (red, the gal) is Team Right.
+- `js/rig.js`, `js/idle.js` and `js/fx.js` (the hand-cut red/blue split) are copied from [eliascroesus/leftright](https://github.com/eliascroesus/leftright) unchanged: Lefty (red, the blonde) is Team Left and Righty (blue, the guy with glasses) is Team Right.
 - `js/vendor/gsap.min.js` is GSAP 3.13, which drives the idle loop (yelling, blinking, speech bubbles).
 
 ## Before launch

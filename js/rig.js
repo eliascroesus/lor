@@ -1,9 +1,9 @@
 /* ==========================================================================
    LEFT RIGHT — character rig
    --------------------------------------------------------------------------
-   Copied from github.com/eliascroesus/leftright. On $LOR the sides are
-   swapped: LENNY (blue, left, the guy) uses it as drawn; RILEY (red, right,
-   the gal) is the same rig mirrored and recoloured. Same body, face and size for both fighters.
+   ONE SVG rig in a flat cutout-cartoon style, drawn facing right. LEFTY
+   (red, left) uses it as drawn; RIGHTY (blue, right) is the same rig
+   mirrored and recoloured. Same body, face and size for both fighters.
    Only the hair differs (gal: blonde shoulder-length bob and lashes /
    guy: short black hair and glasses).
    Drip (cosmetic, from the game's crate airdrops) is part of the same rig
@@ -272,8 +272,8 @@
 .rig .f-gold-dark{fill:var(--star-dark)}
 .rig .f-laser{fill:var(--laser)}
 .rig .line-core{fill:none;stroke:var(--paper);stroke-width:calc(var(--ow) * 1.1);vector-effect:non-scaling-stroke;stroke-linecap:round}
-.rig[data-team="left"]{--team:var(--blue);--team-dark:var(--blue-dark)}
-.rig[data-team="right"]{--team:var(--red);--team-dark:var(--red-dark)}
+.rig[data-team="left"]{--team:var(--red);--team-dark:var(--red-dark)}
+.rig[data-team="right"]{--team:var(--blue);--team-dark:var(--blue-dark)}
 .rig[data-variant="gal"]{--hair:var(--hair-blonde);--hair-2:var(--hair-blonde-2)}
 .rig[data-variant="guy"]{--hair:var(--hair-black);--hair-2:var(--hair-black-2)}
 .rig[data-variant="guy"] .gal-only,.rig[data-variant="gal"] .guy-only{display:none}
@@ -292,8 +292,8 @@
      "guy" the black hair and glasses; swap them to swap sides. `hat` can be
      "beanie" or "cap" (or null for none). Everything else is identical. */
   const TEAMS = {
-    left: { id: 'left', name: 'LENNY', side: 'LEFT', facing: 1, variant: 'guy', hat: null },
-    right: { id: 'right', name: 'RILEY', side: 'RIGHT', facing: -1, variant: 'gal', hat: null },
+    left: { id: 'left', name: 'LEFTY', side: 'LEFT', facing: 1, variant: 'gal', hat: null },
+    right: { id: 'right', name: 'RIGHTY', side: 'RIGHT', facing: -1, variant: 'guy', hat: null },
   };
 
   /* Every animatable channel with its neutral value. Units: px / degrees in
